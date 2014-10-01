@@ -8,6 +8,7 @@ cp /docker-build/support/entry.sh /usr/local/bin/entry.sh
 
 # Install packages
 apt-get update
+apt-get -y upgrade
 apt-get -y install autoconf automake curl dpkg-dev emacs24-nox g++ gcc git-core libc6-dev libpcre3-dev liblzma-dev make man-db pkg-config software-properties-common wget zlib1g-dev
 
 # Locale
