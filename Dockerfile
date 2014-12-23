@@ -2,7 +2,7 @@
 FROM phusion/baseimage:0.9.15
 
 # nccts/baseimage
-# Version: 0.0.9
+# Version: 0.0.10
 MAINTAINER "Michael Bradley" <michael.bradley@nccts.org>
 # Ave, maris stella, Dei mater alma, atque semper virgo, felix cœli porta.
 
