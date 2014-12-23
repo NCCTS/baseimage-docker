@@ -19,7 +19,8 @@ RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 ADD . /docker-build
 
 # Run main setup script, cleanup supporting files
-RUN chmod -R 777 /docker-build && /docker-build/setup.sh && rm -rf /docker-build
+RUN chmod -R 777 /docker-build
+RUN /docker-build/setup.sh && rm -rf /docker-build
 
 # Use phusion/baseimage's init system as the entrypoint:
 # 'entry.sh' starts tmux as the 'sailor' user with a session named 'base'
