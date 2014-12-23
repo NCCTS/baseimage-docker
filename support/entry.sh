@@ -1,17 +1,43 @@
 #!/bin/bash
 
-sess_name=$1
+sess_name="$1"
 shift
+if [ "${SESS:+set}" = set ]; then
+    sess_name="$SESS"
+fi
 
-if [ -n "$*" ]; then
-    tmux_cmd=(tmux new-session -s "$sess_name" "$*")
-    su_cmd=(su -c "$(printf "%q " "${tmux_cmd[@]}")" - sailor)
-    bash -l -c "$(printf "%q " "${su_cmd[@]}")"
+tmux_ctx=false
+if [ "${TMUX+set}" = set ]; then
+    tmux_ctx=true
+fi
+
+login_ctx="sailor"
+if [ "${LOGIN:+set}" = set ]; then
+    login_ctx="$LOGIN"
+fi
+
+root_ctx=false
+if [ "$login_ctx" = "root" ]; then
+    root_ctx=true
+fi
+if [ "${ROOT+set}" = set ]; then
+    login_ctx="root"
+    root_ctx=true
+fi
+
+if [ $tmux_ctx = true ]; then
+    if [ -n "$*" ]; then
+        tmux_cmd=(exec tmux new-session -s "$sess_name" "$*")
+        sudo_cmd=(sudo -i -u "$login_ctx" -- exec bash -i -c "$(printf "%q " "${tmux_cmd[@]}")")
+        eval "exec $(printf "%q " "${sudo_cmd[@]}")"
+    else
+        exec sudo -i -u $login_ctx -- exec bash -i -c "exec tmux new-session -s $sess_name"
+    fi
 else
-    bash -l -c "su -c 'tmux new-session -s $sess_name' - sailor"
-
-    # Alternatively, allow `command exit` in a 'sailor'
-    # tmux/shell to drop back to a root shell
-    # ------------------------------------------------------------
-    # bash -l -c "su -c 'tmux new-session -s $sess_name' - sailor; bash"
+    if [ -n "$*" ]; then
+        sudo_cmd=(sudo -i -u "$login_ctx" -- exec bash -i -c "$*")
+        eval "exec $(printf "%q " "${sudo_cmd[@]}")"
+    else
+        exec sudo -i -u $login_ctx
+    fi
 fi
