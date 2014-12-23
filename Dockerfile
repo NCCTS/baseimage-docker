@@ -35,21 +35,24 @@ CMD [""]
 # docker run -it --rm nccts/baseimage 'top'
 # docker run -it --rm nccts/baseimage "top"
 
-# docker run -it --rm nccts/baseimage top -u sailor
-# docker run -it --rm nccts/baseimage 'top -u sailor'
-# docker run -it --rm nccts/baseimage "top -u sailor"
+# docker run -it --rm --env TMUX nccts/baseimage
+# docker run -it --rm --env TMUX nccts/baseimage top
+# docker run -it --rm --env TMUX --env SESS=hello nccts/baseimage top
 
-# docker run -it --rm nccts/baseimage   \
-#     tmux new-window -n win0 -d top \; \
-#     tmux new-window -n win1 -d top \; \
+# docker run -it --rm --env ROOT nccts/baseimage top
+# docker run -it --rm --env LOGIN=root nccts/baseimage top
+
+# docker run -it --rm --env TMUX nccts/baseimage \
+#     tmux new-window -n win0 -d top \;          \
+#     tmux new-window -n win1 -d top \;          \
 #     tmux new-window -n win2
 
-# docker run -it --rm nccts/baseimage '            \
+# docker run -it --rm --env TMUX nccts/baseimage ' \
 #     tmux new-window -n win0 -d "top -u root"   ; \
 #     tmux new-window -n win1 -d "top -u sailor" ; \
 #     tmux new-window -n win2'
 
-# docker run -it --rm nccts/baseimage "            \
+# docker run -it --rm --env TMUX nccts/baseimage " \
 #     tmux new-window -n win0 -d 'top -u root'   ; \
 #     tmux new-window -n win1 -d 'top -u sailor' ; \
 #     tmux new-window -n win2"
