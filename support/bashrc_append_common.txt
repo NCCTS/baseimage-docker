@@ -6,3 +6,16 @@ export LANGUAGE=en_US.UTF-8
 [ -n "$TMUX" ] && export TERM=screen-256color
 
 alias e="emacs -Q"
+
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
+
+# Lock and Load a custom theme file
+# location /.bash_it/themes/
+export BASH_IT_THEME="rjorgenson"
+
+# Don't check mail when opening terminal
+unset MAILCHECK
+
+# Load Bash It
+source $BASH_IT/bash_it.sh
