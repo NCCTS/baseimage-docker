@@ -7,7 +7,7 @@ MAINTAINER "Michael Bradley" <michael.bradley@nccts.org>
 # Ave, maris stella, Dei mater alma, atque semper virgo, felix cœli porta.
 
 # Cache buster
-ENV REFRESHED_AT [2014-12-23 Tue 03:46]
+ENV REFRESHED_AT [2014-12-25 Thu 19:12]
 
 # Set environment variables
 ENV HOME /root
