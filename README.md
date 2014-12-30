@@ -5,6 +5,9 @@ nccts/baseimage
 
 > A Docker baseimage for convenient, composable dev and small prod environments.
 
+* [Docker Registry](https://registry.hub.docker.com/u/nccts/baseimage/)
+* [Quay.io](https://quay.io/repository/nccts/baseimage)
+
 ```shell
 docker pull nccts/baseimage
 # -or-
