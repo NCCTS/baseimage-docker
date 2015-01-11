@@ -20,3 +20,6 @@ unset MAILCHECK
 
 # Load Bash It
 source $BASH_IT/bash_it.sh
+
+# Load entry environment variables (if any)
+source $HOME/.entry_env
