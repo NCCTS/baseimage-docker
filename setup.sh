@@ -43,6 +43,7 @@ sudo -i -u sailor /docker-build/support/user_common.sh
 
 # Build, install: ag, tmux, watchman
 /docker-build/support/build_ag.sh
+/docker-build/support/build_emacs.sh
 /docker-build/support/build_tmux.sh
 /docker-build/support/build_watchman.sh
 
