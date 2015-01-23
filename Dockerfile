@@ -1,5 +1,5 @@
 # Docker version 1.4.1, build 5bc2ff8
-FROM phusion/baseimage:0.9.15
+FROM phusion/baseimage:0.9.16
 
 # nccts/baseimage
 # Version: 0.0.10
