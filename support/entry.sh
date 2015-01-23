@@ -7,7 +7,7 @@ if [ "${SESS:+set}" = set ]; then
 fi
 
 tmux_ctx=false
-if [ "${TMUX+set}" = set ]; then
+if [ "${TMUX_INIT+set}" = set ]; then
     tmux_ctx=true
 fi
 
