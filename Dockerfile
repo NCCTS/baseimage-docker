@@ -2,12 +2,12 @@
 FROM phusion/baseimage:0.9.16
 
 # nccts/baseimage
-# Version: 0.0.10
+# Version: 0.0.11
 MAINTAINER "Michael Bradley" <michael.bradley@nccts.org>
 # Ave, maris stella, Dei mater alma, atque semper virgo, felix cœli porta.
 
 # Cache buster
-ENV REFRESHED_AT [2014-12-25 Thu 19:12]
+ENV REFRESHED_AT [2015-01-22 Thu 21:54]
 
 # Set environment variables
 ENV HOME /root
