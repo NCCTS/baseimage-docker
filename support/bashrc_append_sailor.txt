@@ -1,3 +1,0 @@
-
-# Safety catch, i.e. when attached with `docker exec`
-alias exit="cat $HOME/.exit-warning.txt"
