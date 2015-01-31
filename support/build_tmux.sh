@@ -55,7 +55,7 @@ cd -
 
 version=`tmux -V | cut -d ' ' -f 2`
 if [ -z "$version" ]; then
-  echo
-  echo "[error] failed to install tmux - check for errors in the above output"
-  exit 1
+    echo
+    echo "[error] failed to install tmux - check for errors in the above output"
+    exit 1
 fi
