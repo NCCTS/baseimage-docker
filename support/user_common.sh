@@ -2,6 +2,23 @@
 
 rm -rf $HOME/.bash_logout
 
+file_append () {
+    echo "$1" >> "$2"
+}
+
+file_overwrite () {
+    echo "$1" > "$2"
+}
+
+file_prepend () {
+    local ed_cmd="1i"
+    if [ ! -f "$2" ]; then
+        touch "$2"
+        ed_cmd="a"
+    fi
+    printf '%s\n' H "$ed_cmd" "$1" . w | ed -s "$2"
+}
+
 touch $HOME/.entry_env
 
 cat "/docker-build/support/bashrc_append_$(whoami).txt" >> $HOME/.bashrc
