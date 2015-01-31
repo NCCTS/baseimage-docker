@@ -14,6 +14,7 @@ apt-get -y install autoconf \
                    bash-completion \
                    curl \
                    dpkg-dev \
+                   ed \
                    g++ \
                    gcc \
                    git-core \
