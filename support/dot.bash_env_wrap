@@ -1,0 +1,16 @@
+if [[ "${ENTRY_BASH_ENV+set}" = set && "${BASH_ENV+set}" = set ]]; then
+    unset ENTRY_BASH_ENV
+    unset BASH_ENV
+fi
+
+if [ -f "$HOME/.bash_env" ]; then
+    . $HOME/.bash_env
+fi
+
+if [ -f "$HOME/.entry_env" ]; then
+    . $HOME/.entry_env
+fi
+
+if [[ "${BASH_ENV:+set}" = set && -f "$BASH_ENV" ]]; then
+    . $BASH_ENV
+fi
