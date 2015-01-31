@@ -22,16 +22,12 @@ libevent_name="libevent-$libevent_version-stable"
 # set the installation directory
 target_dir="/usr/local"
 
-# download source files for tmux, libevent, and ncurses
-# save them in /tmp
+mkdir -p /docker-build/support/Downloads
+cd /docker-build/support/Downloads
 
-cd /tmp
-
-wget -O $tmux_name.tar.gz http://sourceforge.net/projects/tmux/files/tmux/$tmux_relative_url.tar.gz/download
+# download source files for libevent and tmux
 wget -O $libevent_name.tar.gz https://github.com/downloads/libevent/libevent/$libevent_name.tar.gz
-# wget -O $ncurses_name.tar.gz ftp://ftp.gnu.org/gnu/ncurses/$ncurses_name.tar.gz
-
-# extract files, configure, and compile
+wget -O $tmux_name.tar.gz http://sourceforge.net/projects/tmux/files/tmux/$tmux_relative_url.tar.gz/download
 
 # libevent installation
 tar xvzf $libevent_name.tar.gz
