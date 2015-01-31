@@ -4,7 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 export HOME=/root
 
 # Install entry script
-cp /docker-build/support/entry.sh /usr/local/bin/entry.sh
+cp /docker-build/support/entry.sh /usr/local/bin/entry
 
 # Install packages
 apt-get update
