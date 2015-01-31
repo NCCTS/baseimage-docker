@@ -31,7 +31,7 @@ apt-get -y install autoconf \
 
 # Locale
 locale-gen --purge en_US.UTF-8
-cat /docker-build/support/default_locale.txt > /etc/default/locale
+cat /docker-build/support/default_locale > /etc/default/locale
 
 # Settings for root
 /docker-build/support/user_root.sh
