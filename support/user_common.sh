@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf $HOME/.bash_logout
+
 touch $HOME/.entry_env
 
 cat "/docker-build/support/bashrc_append_$(whoami).txt" >> $HOME/.bashrc
