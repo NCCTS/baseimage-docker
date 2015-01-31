@@ -39,7 +39,11 @@ cat /docker-build/support/default_locale > /etc/default/locale
 
 # Unprivileged user 'sailor'
 adduser --disabled-password --gecos "" sailor
-sudo -i -u sailor /docker-build/support/user_sailor.sh
+# Sudo user 'captain'
+adduser --disabled-password --gecos "" captain
+usermod -a -G sudo captain
+echo -e '%sudo\tALL=NOPASSWD: ALL' >> /etc/sudoers
+
 sudo -i -u sailor /docker-build/support/user_common.sh
 
 # Build, install: ag, tmux, watchman
