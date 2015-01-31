@@ -27,7 +27,7 @@ ENV ENTRY_SESS_DEFAULT base
 # Use phusion/baseimage's init system as the entrypoint:
 # 'entry' starts shell (or tmux) as the 'sailor' user by default
 # (tmux: with a session named 'base')
-ENTRYPOINT ["/sbin/my_init", "--", "/usr/local/bin/entry.sh", "base"]
+ENTRYPOINT ["/sbin/my_init", "--", "/usr/local/bin/entry", "--"]
 CMD [""]
 
 # example usage
