@@ -41,7 +41,12 @@ cd -
 tar xvzf ${tmux_name}*.tar.gz
 cd ${tmux_name}*/
 
+./configure CFLAGS="-I$target_dir/include -I/usr/include" \
+            LDFLAGS="-L$target_dir/lib -L/usr/include -L$target_dir/include"
 
+CPPFLAGS="-I$target_dir/include -I/usr/include" \
+LDFLAGS="-static -L$target_dir/include -L/usr/include -L$target_dir/lib" \
+make
 
 cp tmux $target_dir/bin
 cd -
