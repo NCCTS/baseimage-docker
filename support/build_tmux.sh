@@ -3,27 +3,23 @@
 # source: https://gist.github.com/shime/5706655
 # modified with assumption that nucrses is already installed, e.g. with apt-get
 
-# Script for installing tmux and dependencies.
+# script for installing tmux and dependencies.
 # tmux will be installed in /usr/local/lib by default.
 
-# Prerequisites: - gcc
+# prerequisites: - gcc
 #                - wget
 
 # define versions
-
 tmux_version="1.9"
 tmux_patch_version="a" # leave empty for stable releases
 
 libevent_version="2.0.21"
-# ncurses_version="5.9"
 
 tmux_name="tmux-$tmux_version"
 tmux_relative_url="$tmux_name/$tmux_name$tmux_patch_version"
 libevent_name="libevent-$libevent_version-stable"
-# ncurses_name="ncurses-$ncurses_version"
 
 # set the installation directory
-
 target_dir="/usr/local"
 
 # download source files for tmux, libevent, and ncurses
@@ -45,25 +41,11 @@ make
 make install
 cd -
 
-# ncurses installation
-# tar xvzf $ncurses_name.tar.gz
-# cd $ncurses_name
-# ./configure --prefix=$target_dir
-# make
-# make install
-# cd -
-
 # tmux installation
 tar xvzf ${tmux_name}*.tar.gz
 cd ${tmux_name}*/
 
-# ./configure CFLAGS="-I$target_dir/include -I$target_dir/include/ncurses" LDFLAGS="-L$target_dir/lib -L$target_dir/include/ncurses -L$target_dir/include"
 
-./configure CFLAGS="-I$target_dir/include -I/usr/include" LDFLAGS="-L$target_dir/lib -L/usr/include -L$target_dir/include"
-
-# CPPFLAGS="-I$target_dir/include -I$target_dir/include/ncurses" LDFLAGS="-static -L$target_dir/include -L$target_dir/include/ncurses -L$target_dir/lib" make
-
-CPPFLAGS="-I$target_dir/include -I/usr/include" LDFLAGS="-static -L$target_dir/include -L/usr/include -L$target_dir/lib" make
 
 cp tmux $target_dir/bin
 cd -
