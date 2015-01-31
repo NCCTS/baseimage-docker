@@ -25,7 +25,7 @@ RUN /docker-build/setup.sh && rm -rf /docker-build
 ENV ENTRY_SESS_DEFAULT base
 
 # Use phusion/baseimage's init system as the entrypoint:
-# 'entry.sh' starts shell (or tmux) as the 'sailor' user
+# 'entry' starts shell (or tmux) as the 'sailor' user by default
 # (tmux: with a session named 'base')
 ENTRYPOINT ["/sbin/my_init", "--", "/usr/local/bin/entry.sh", "base"]
 CMD [""]
