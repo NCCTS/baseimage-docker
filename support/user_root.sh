@@ -1,3 +1,3 @@
 #!/bin/bash
 
-# Nothing extra for nccts/baseimage root user
+# Nothing extra for root user
