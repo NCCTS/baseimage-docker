@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # source: https://gist.github.com/shime/5706655
+# modified with assumption that nucrses is already installed, e.g. with apt-get
 
 # Script for installing tmux and dependencies.
 # tmux will be installed in /usr/local/lib by default.
