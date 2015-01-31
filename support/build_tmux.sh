@@ -49,6 +49,8 @@ LDFLAGS="-static -L$target_dir/include -L/usr/include -L$target_dir/lib" \
 make
 
 cp tmux $target_dir/bin
+mkdir -p /usr/local/share/man/man1
+cp tmux.1 /usr/local/share/man/man1
 cd -
 
 version=`tmux -V | cut -d ' ' -f 2`
