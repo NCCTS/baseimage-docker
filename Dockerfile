@@ -30,16 +30,16 @@ ENV ENTRY_ENV_DEFAULT= \
 # completely disable sshd service
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 
-# Add supporting files for the build
+# add supporting files for the build
 ADD . /docker-build
 
-# Run main setup script, cleanup supporting files
+# run main setup script, cleanup supporting files
 RUN chmod -R 777 /docker-build
 RUN /docker-build/setup.sh && rm -rf /docker-build
 
 ENV ENTRY_SESS_DEFAULT base
 
-# Use phusion/baseimage's init system as the entrypoint:
+# use phusion/baseimage's init system as the entrypoint:
 # 'entry' starts shell (or tmux) as the 'sailor' user by default
 # (tmux: with a session named 'base')
 ENTRYPOINT ["/sbin/my_init", "--", "/usr/local/bin/entry", "--"]
