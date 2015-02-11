@@ -306,7 +306,7 @@ if [ "$opt_ENTRY_KILL" = true ]; then
         echo "--kill option requires the existence of /var/run/entry.pid"
         exit 1
     fi
-if
+fi
 
 # ----------------------------
 
