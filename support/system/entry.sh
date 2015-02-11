@@ -303,7 +303,7 @@ if [ "$opt_ENTRY_KILL" = true ]; then
         kill $(cat /var/run/entry.pid)
         exit $?
     else
-        echo "--kill option requires the existence of file /var/run/entry.pid"
+        echo "--kill option requires the existence of /var/run/entry.pid"
         exit 1
     fi
 if
