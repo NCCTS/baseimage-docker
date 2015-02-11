@@ -12,7 +12,7 @@ ENV REFRESHED_AT [2015-01-22 Thu 21:54]
 # Set environment variables
 ENV HOME /root
 
-# Completely disable sshd
+# completely disable sshd service
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 # Add supporting files for the build
