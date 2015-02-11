@@ -6,11 +6,9 @@ FROM phusion/baseimage:0.9.16
 MAINTAINER "Michael Bradley" <michael.bradley@nccts.org>
 # Ave, maris stella, Dei mater alma, atque semper virgo, felix cœli porta.
 
-# Cache buster
-ENV REFRESHED_AT [2015-01-22 Thu 21:54]
+# build timestamp
+ENV REFRESHED_AT [2015-01-30 Sun 23:37]
 
-# Set environment variables
-ENV HOME /root
 
 # completely disable sshd service
 RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
