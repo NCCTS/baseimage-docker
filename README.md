@@ -2,6 +2,7 @@ nccts/baseimage
 ===============
 
 [![License BSD 2-Clause](https://img.shields.io/badge/license-BSD-brightgreen.svg?style=flat)](http://opensource.org/licenses/BSD-2-Clause)
+[![Floobits Status](https://floobits.com/NCCTS/baseimage-docker.svg)](https://floobits.com/NCCTS/baseimage-docker/redirect)
 
 > A Docker baseimage for convenient, composable dev and small prod environments.
 
