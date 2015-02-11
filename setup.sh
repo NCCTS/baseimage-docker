@@ -1,70 +1,15 @@
 #!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
-export HOME=/root
 
-# Install entry script
-cp /docker-build/support/entry.sh /usr/local/bin/entry
+# packages,system config
+/docker-build/support/config.sh
 
-# Install packages
-apt-get update
-apt-get -y upgrade
-apt-get -y install autoconf \
-                   automake \
-                   bash-completion \
-                   curl \
-                   dpkg-dev \
-                   ed \
-                   g++ \
-                   gcc \
-                   git-core \
-                   libc6-dev \
-                   libncurses5-dev \
-                   libpcre3-dev \
-                   liblzma-dev \
-                   make \
-                   man-db \
-                   pkg-config \
-                   software-properties-common \
-                   wget \
-                   zlib1g-dev
+# user config
+/docker-build/support/user.sh
 
-# Locale
-locale-gen --purge en_US.UTF-8
-cat /docker-build/support/default_locale > /etc/default/locale
+# build,install from sources
+/docker-build/support/build.sh
 
-# Settings for root
-/docker-build/support/user_root.sh
-/docker-build/support/user_common.sh
-
-# Unprivileged user 'sailor'
-adduser --disabled-password --gecos "" sailor
-# Sudo user 'captain'
-adduser --disabled-password --gecos "" captain
-usermod -a -G sudo captain
-echo -e '%sudo\tALL=NOPASSWD: ALL' >> /etc/sudoers
-
-sudo -i -u sailor /docker-build/support/user_common.sh
-
-# Build, install: ag, tmux, watchman
-/docker-build/support/build_ag.sh
-/docker-build/support/build_emacs.sh
-/docker-build/support/build_tmux.sh
-/docker-build/support/build_watchman.sh
-
-# Cleanup
-apt-get -y remove --auto-remove autoconf \
-                                automake \
-                                dpkg-dev \
-                                g++ \
-                                gcc \
-                                libc6-dev \
-                                libpcre3-dev \
-                                liblzma-dev \
-                                pkg-config \
-                                software-properties-common \
-                                zlib1g-dev
-apt-get -y autoclean
-apt-get -y clean
-apt-get -y autoremove
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# cleanup
+/docker-build/support/cleanup.sh

@@ -22,8 +22,8 @@ libevent_name="libevent-$libevent_version-stable"
 # set the installation directory
 target_dir="/usr/local"
 
-mkdir -p /docker-build/support/Downloads
-cd /docker-build/support/Downloads
+mkdir -p /docker-build/support/build/downloads
+cd /docker-build/support/build/downloads
 
 # download source files for libevent and tmux
 wget -O $libevent_name.tar.gz https://github.com/downloads/libevent/libevent/$libevent_name.tar.gz

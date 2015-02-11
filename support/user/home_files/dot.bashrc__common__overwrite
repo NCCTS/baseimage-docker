@@ -7,6 +7,10 @@ esac
 # don't check mail
 unset MAILCHECK
 
+# set TERM
+export TERM=xterm-256color
+[ -n "$TMUX" ] && export TERM=screen-256color
+
 # don't put duplicate lines or lines starting with space in the history.
 # see bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -46,9 +50,13 @@ if ! shopt -oq posix; then
 fi
 
 # load Bash It
-export BASH_IT=$HOME/.bash_it
-export BASH_IT_THEME="zork"
-. $BASH_IT/bash_it.sh
+export BASH_IT=~/.bash_it
+if [ -f $BASH_IT/bash_it.sh ]; then
+    export BASH_IT_THEME="zorg"
+    . $BASH_IT/bash_it.sh
+else
+    unset BASH_IT
+fi
 
 # alias definitions
 if [ -f ~/.bash_aliases ]; then
