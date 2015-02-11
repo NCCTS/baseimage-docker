@@ -68,7 +68,7 @@ entry_vars=(
     ENTRY_HELP%
     h
     ENTRY_KILL%
-    k:
+    k
     ENTRY_LOGIN:
     l:
     ENTRY_RE_ENTRY%
