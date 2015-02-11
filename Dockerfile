@@ -52,7 +52,7 @@ CMD [""]
 
 # docker run -it --rm --env ENTRY_TMUX nccts/baseimage
 # docker run -it --rm --env ENTRY_TMUX nccts/baseimage top
-# docker run -it --rm --env ENTRY_TMUX --env ENTRY_SESS=hello nccts/baseimage top
+# docker run -it --rm --env ENTRY_TMUX --env ENTRY_SESSION=hello nccts/baseimage top
 
 # docker run -it --rm --env ENTRY_ROOT nccts/baseimage top
 # docker run -it --rm --env ENTRY_LOGIN=root nccts/baseimage top
