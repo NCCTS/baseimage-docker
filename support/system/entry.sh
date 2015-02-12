@@ -274,31 +274,42 @@ while [ $# -gt 0 ]; do
         i=$(search_short $1)
     fi
     if [ "$i" = "-1" ]; then
-        echo "unknown entry option"
-        exit 1
+        case "$t" in
+            array)
+                eval "opt_v_len=\${#$opt_v[@]}"
+                (( --opt_v_len ))
+                eval "$opt_v[$opt_v_len]+=\" $1\""
+                shift
+                ;;
+            scalar)
+                eval "$opt_v+=\" $1\""
+                shift
+                ;;
+        esac
+    else
+        t=${entry_vars_types[i]}
+        v=${entry_vars_plain[i]}
+        opt_v="opt_"$v
+        case "$t" in
+            array)
+                eval "$opt_v+=($2)"
+                shift
+                ;;
+            scalar)
+                eval "$opt_v=$2"
+                shift
+                ;;
+            marker-true)
+                eval "$opt_v=true"
+                ;;
+            marker-false)
+                eval "$opt_v=false"
+                ;;
+        esac
+        shift
     fi
-    t=${entry_vars_types[i]}
-    v=${entry_vars_plain[i]}
-    opt_v="opt_"$v
-    case "$t" in
-        array)
-            eval "$opt_v+=($2)"
-            shift
-            ;;
-        scalar)
-            eval "$opt_v=$2"
-            shift
-            ;;
-        marker-true)
-            eval "$opt_v=true"
-            ;;
-        marker-false)
-            eval "$opt_v=false"
-            ;;
-    esac
-    shift
 done
-unset i t v opt_v
+unset i t v opt_v opt_v_len
 
 [ "$opt_ENTRY_HELP" = true ] && usage
 
