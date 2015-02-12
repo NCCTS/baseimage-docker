@@ -18,6 +18,7 @@ docker pull quay.io/nccts/baseimage
 ## Usage
 
 TODO: need to check/revise semicolon usage in heredoc examples
+TODO: provide examples of `docker exec` in combo w/ `/usr/local/bin/entry`
 
 ```shell
 docker run -it --rm nccts/baseimage
