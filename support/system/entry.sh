@@ -193,6 +193,10 @@ Specify array members with multiple \`opt=val\` pairs for the same option:
 
 A special case is the --env option:
 
+  --env=FOO=bar --env=BAZ=quux
+
+For readability's sake prefer:
+
   --env FOO=bar --env BAZ=quux
 
 Interpretation of options described below, \`val\` indicates default setting:
