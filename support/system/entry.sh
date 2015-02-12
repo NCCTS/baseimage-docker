@@ -347,6 +347,18 @@ for v in "${ENTRY_RESET_ENV[@]}"; do
 done
 unset v v_def
 
+# doesn't account for ENTRY_ var types (i.e. casting to array) if such are
+# passed through entry --env; may need to augment w/ such casts
+for pair in "${ENTRY_ENV[@]}"; do
+    # need to run pair through sed w/ backreference and get part up to =
+    # then do an eval-set-test; if not set then do...
+    eval "$(printf "%q " "$pair")"
+done
+unset pair
+
+
+
+
 # ----------------------------
 
 echo
@@ -359,8 +371,9 @@ exit 123
 
 # ----------------------------
 
-# 3. set env vars per ENTRY_ENV, but only if the var is *not* already set; do not account for ENTRY_
-#    var types (can revisit this decision later)
+
+
+
 # 4. set ENTRY_ env vars per other entry --options, but only if the env var is *not* already set
 #    and opt_ENTRY_ env var **is** set; make sure to account for type
 # 5. set ENTRY_ env vars which are not otherwise set, using the _DEFAULT values; make sure to
