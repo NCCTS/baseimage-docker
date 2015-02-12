@@ -348,7 +348,7 @@ done
 unset v v_def
 
 # doesn't account for ENTRY_ var types (i.e. casting to array) if such are
-# passed through entry --env; may need to augment w/ such casts
+# passed through entry --env; may need to augment w/ type/casting logic
 for pair in "${ENTRY_ENV[@]}"; do
     # need to run pair through sed w/ backreference and get part up to =
     # then do an eval-set-test; if not set then do...
