@@ -323,6 +323,30 @@ if [ "$opt_ENTRY_KILL" = true ]; then
     fi
 fi
 
+entry_start=(ENTRY_ENV ENTRY_RESET_ENV ENTRY_UNSET_ENV)
+for v in "${entry_start[@]}"; do
+    opt_v_test=$(eval "if [ \"\${opt_$v+set}\" = set ]; then echo true; fi")
+    if [ "$opt_v_test" = true ]; then
+        eval "declare -a $v=()"
+        eval "for vv in \${!opt_$v[@]}; do $v[\$vv]=\"\${opt_$v[\$vv]}\"; done"
+    else
+        v_def=$v"_DEFAULT"
+        eval "$v=(\$$v_def)"
+    fi
+done
+unset entry_start v opt_v_test v_def
+
+for v in "${ENTRY_UNSET_ENV[@]}"; do
+    eval "unset $v"
+done
+unset v
+
+for v in "${ENTRY_RESET_ENV[@]}"; do
+    v_def=$v"_DEFAULT"
+    eval "$v=(\$$v_def)"
+done
+unset v v_def
+
 # ----------------------------
 
 echo
@@ -335,10 +359,6 @@ exit 123
 
 # ----------------------------
 
-# 0. set ENTRY_ env vars which correspond to the --unset-env, --reset-env, --env,
-#    i.e. the options themselves, not their values
-# 1. unset env vars per ENTRY_UNSET_ENV
-# 2. set env vars per ENTRY_RESET_ENV to their _DEFAULT values, but only if the var **is** already set
 # 3. set env vars per ENTRY_ENV, but only if the var is *not* already set; do not account for ENTRY_
 #    var types (can revisit this decision later)
 # 4. set ENTRY_ env vars per other entry --options, but only if the env var is *not* already set
