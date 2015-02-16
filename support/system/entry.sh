@@ -404,7 +404,30 @@ for v in "${entry_vars_plain[@]}"; do
 done
 unset v i opt_v_test
 
+for i in "${!entry_vars_plain[@]}"; do
+    v=${entry_vars_plain[$i]}
+    v_test=$(eval "if [ \"\${$v+set}\" = set ]; then echo true; fi")
+    if [ "$v_test" != true ]; then
+        v_def=$v"_DEFAULT"
+        t=${entry_vars_types[$i]}
+        case "$t" in
+            array)
                 eval "declare -a $v=(\$$v_def)"
+                ;;
+            scalar)
+                eval "$v=\"\$$v_def\""
+                ;;
+            marker-true)
+                eval "$v=\$$v_def"
+                ;;
+            marker-false)
+                eval "$v=\$$v_def"
+                ;;
+        esac
+    fi
+done
+unset i v v_test v_def t
+
             eval "declare -a $v=(\${$v[@]})"
 
 entry_white=false
