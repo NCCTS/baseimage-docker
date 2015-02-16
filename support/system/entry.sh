@@ -410,10 +410,6 @@ exit 123
 # debug w/ printenv before moving on
 # !!!
 
-# need to think about how --env,--unset-env,--reset-env and --re-entry (or the lack of it)
-# affect how ~/.entry_env is processed and how env vars are passed through sudo
-
-
 
 
 
