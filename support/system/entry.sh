@@ -69,6 +69,8 @@ fi
 #     && entry_login_shell=true \
 #         || entry_login_shell=false
 
+# consider moving the array below (but seralized as string) into Dockerfile
+# types: array (+), scalar (:), marker-true (%), marker-false (@)
     ENTRY_ENV+
     e:
     ENTRY_ENV_FILTER_ALL:
