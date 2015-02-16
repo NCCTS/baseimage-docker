@@ -373,7 +373,13 @@ unset pair
                 eval "declare -a $v=(\$$v_def)"
             eval "declare -a $v=(\${$v[@]})"
     declare -a entry_white_norm=($(echo "${ENTRY_ENV_FILTER_WHITE[@]}" | \
+                                          sed 's/^ *//' | \
+                                          sed 's/ *$//' | \
+                                          sed 's/ \+/ /g'))
     declare -a entry_black_norm=($(echo "${ENTRY_ENV_FILTER_BLACK[@]}" | \
+                                          sed 's/^ *//' | \
+                                          sed 's/ *$//' | \
+                                          sed 's/ \+/ /g'))
 
 # serialiaze arrays, export ENTRY_ vars
 for i in "${!entry_vars_plain[@]}"; do
