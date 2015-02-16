@@ -40,6 +40,31 @@ if [ "$entry_ppid" = "1" ]; then
 fi
 
 entry_vars=(
+entry_tty=true
+if [ "$(tty 2>&1)" = "not a tty" ]; then
+    entry_tty=false
+fi
+
+# assume the session is interactive if there's a tty
+entry_interactive=
+if [ "$entry_tty" = true ]; then
+    entry_interactive=true
+else
+    entry_interactive=false
+fi
+
+# the following are helpful refs but not reliable in the context of entry itself
+# ------------------------------------------------------------------------------
+# entry_interactive=
+# [[ $- == *i* ]] \
+#     && entry_interactive=true \
+#         || entry_interactive=false
+
+# entry_login_shell=
+# shopt -q login_shell \
+#     && entry_login_shell=true \
+#         || entry_login_shell=false
+
     ENTRY_ENV+
     e:
     ENTRY_ENV_FILTER_ALL:
@@ -407,20 +432,8 @@ unset i v v_def v_def_test v_lcase t
 # affect how ~/.entry_env is processed and how env vars are passed through sudo
 
 
-entry_login_shell=
-shopt -q login_shell \
-    && entry_login_shell=true \
-        || entry_login_shell=false
 
-entry_interactive=
-[[ $- == *i* ]] \
-    && entry_interactive=true \
-        || entry_interactive=false
 
-entry_tty=true
-if [ "$(tty 2>&1)" = "not a tty" ]; then
-    entry_tty=false
-fi
 
 entry_tmux=false
 if [ "${ENTRY_TMUX+set}" = set ]; then
