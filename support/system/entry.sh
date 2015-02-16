@@ -381,6 +381,21 @@ unset pair
     declare -a svc_fwd=($(echo "$svc" | sed '/-forwarder$/!d'))
 
 
+if [ "$entry_ppid" = "1" ]; then
+    if [ "$ENTRY_NO_FORWARD" != "never" ]; then
+        if [ "$ENTRY_NO_FORWARD" = "always" ]; then
+            entry_stop_forward
+        else
+            if [[ "$ENTRY_NO_FORWARD" = "interactive" \
+                        &&  "$entry_interactive" = true \
+                            || \
+                            "$ENTRY_NO_FORWARD" = "not-interactive" \
+                                &&  "$entry_interactive" = false ]]; then
+                entry_stop_forward
+            fi
+        fi
+    fi
+fi
 
 
 
