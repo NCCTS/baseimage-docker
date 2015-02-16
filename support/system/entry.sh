@@ -364,6 +364,16 @@ for v in "${ENTRY_RESET_ENV[@]}"; do
 done
 unset v v_def
 
+# for pair in "${ENTRY_ENV[@]}"; do
+#     v="$(echo "$pair" | grep -o ^.\*= | sed 's/=$//')"
+#     v_test=$(eval "if [ \"\${$v+set}\" = set ]; then echo true; fi")
+#     if [ "$v_test" != true ]; then
+#         eval "$(printf "%q " "$pair")"
+#     fi
+# done
+# unset pair
+
+# ^ same as above but sets/overwrites whether or not the var is already set
 for pair in "${ENTRY_ENV[@]}"; do
 done
 unset pair
