@@ -43,7 +43,6 @@ if [ "$entry_ppid" = "1" ]; then
     echo "$entry_pid" > /var/run/entry.pid
 fi
 
-entry_vars=(
 entry_tty=true
 if [ "$(tty 2>&1)" = "not a tty" ]; then
     entry_tty=false
@@ -71,6 +70,7 @@ fi
 
 # consider moving the array below (but seralized as string) into Dockerfile
 # types: array (+), scalar (:), marker-true (%), marker-false (@)
+declare -a entry_vars=(
     ENTRY_ENV+
     e:
     ENTRY_ENV_FILTER_ALL:
@@ -89,6 +89,8 @@ fi
     k
     ENTRY_LOGIN:
     l:
+    ENTRY_NO_FORWARD:
+    F:
     ENTRY_RE_ENTRY%
     r
     ENTRY_RESET_ENV+
@@ -104,7 +106,7 @@ fi
     ENTRY_USERS+
     u:
 )
-entry_vars_only=()
+declare -a entry_vars_only=()
 for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
     v=${entry_vars[i]}
     entry_vars_only+=($v)
@@ -112,8 +114,15 @@ done
 unset i v
 
 # types: array (+), scalar (:), marker-true (%), marker-false (@)
-entry_vars_types=()
+declare -a entry_vars_plain=()
 for v in "${entry_vars_only[@]}"; do
+    entry_vars_plain+=($(echo $v | \
+                                sed 's/\+$//' | \
+                                sed 's/:$//'  | \
+                                sed 's/%$//'  | \
+                                sed 's/@$//'))
+done
+declare -a entry_vars_types=()
     if [[ "$v" =~ \+$ ]]; then
         t="array"
     elif [[ "$v" =~ :$ ]]; then
@@ -146,26 +155,27 @@ for v in "${entry_vars_plain[@]}"; do
 done
 unset v
 
-long_options=()
+declare -a entry_long_options=()
 for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
     lo=${entry_vars[i]}
-    long_options+=($(echo $lo | sed 's/\+$/:/' | \
-                            sed 's/%$//'       | \
-                            sed 's/@$//'       | \
-                            sed 's/^ENTRY_//'  | \
-                            sed 's/_/-/g'      | \
-                            tr '[:upper:]' '[:lower:]'))
+    entry_long_options+=($(echo $lo | \
+                                  sed 's/\+$/:/'    | \
+                                  sed 's/%$//'      | \
+                                  sed 's/@$//'      | \
+                                  sed 's/^ENTRY_//' | \
+                                  sed 's/_/-/g'     | \
+                                  tr '[:upper:]' '[:lower:]'))
 done
 unset i lo
-long_options_plain=($(echo "${long_options[@]}" | sed 's/://g'))
+declare -a entry_long_options_plain=($(echo ${entry_long_options[@]} | \
 
-short_options=()
+declare -a entry_short_options=()
 for (( i=1; i<${#entry_vars[@]} ; i+=2 )) ; do
     so=${entry_vars[i]}
     short_options+=($so)
 done
 unset i so
-short_options_plain=($(echo "${short_options[@]}" | sed 's/://g'))
+declare -a entry_short_options_plain=($(echo ${entry_short_options[@]} | \
 
 # This text can and should be dynamically generated; needs option descriptions as well
 read -r -d '' usage_text_short << EOF
@@ -308,6 +318,7 @@ while [ $# -gt 0 ]; do
         t=${entry_vars_types[i]}
         v=${entry_vars_plain[i]}
         opt_v="opt_"$v
+            eval "declare -a opt_$v=()"
         case "$t" in
             array)
                 eval "$opt_v+=($2)"
@@ -349,7 +360,7 @@ for v in "${entry_start[@]}"; do
         eval "for vv in \${!opt_$v[@]}; do $v[\$vv]=\"\${opt_$v[\$vv]}\"; done"
     else
         v_def=$v"_DEFAULT"
-        eval "$v=(\$$v_def)"
+        eval "declare -a $v=(\$$v_def)"
     fi
 done
 unset entry_start v opt_v_test v_def
@@ -376,6 +387,10 @@ unset pair
 
 
 
+                eval "declare -a $v=(\$$v_def)"
+            eval "declare -a $v=(\${$v[@]})"
+    declare -a entry_white_norm=($(echo "${ENTRY_ENV_FILTER_WHITE[@]}" | \
+    declare -a entry_black_norm=($(echo "${ENTRY_ENV_FILTER_BLACK[@]}" | \
 
 # ----------------------------
 
@@ -388,6 +403,7 @@ echo
 exit 123
 
 # ----------------------------
+    declare -a svc_fwd=($(echo "$svc" | sed '/-forwarder$/!d'))
 
 
 
