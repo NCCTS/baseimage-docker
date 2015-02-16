@@ -121,6 +121,8 @@ for v in "${entry_vars_only[@]}"; do
                                 sed 's/%$//'  | \
                                 sed 's/@$//'))
 done
+unset v
+
 declare -a entry_vars_types=()
     if [[ "$v" =~ \+$ ]]; then
         t="array"
@@ -277,6 +279,7 @@ search_long () {
             ((i++))
         fi
     done
+    unset str
     echo "-1"
 }
 
@@ -291,14 +294,15 @@ search_short () {
             ((i++))
         fi
     done
+    unset str
     echo "-1"
 }
 
 while [ $# -gt 0 ]; do
-    [ $1 = "--" ] && break
-    i=$(search_long $1)
+    [ "$1" = "--" ] && break
+    i=$(entry_search_long "$1")
     if [ "$i" = "-1" ]; then
-        i=$(search_short $1)
+        i=$(entry_search_short "$1")
     fi
     if [ "$i" = "-1" ]; then
         case "$t" in
@@ -337,9 +341,7 @@ while [ $# -gt 0 ]; do
         shift
     fi
 done
-unset i t v opt_v opt_v_len
-
-[ "$opt_ENTRY_HELP" = true ] && usage
+unset i opt_v_len t v opt_v_test
 
 if [ "$opt_ENTRY_KILL" = true ]; then
     if [ -e /var/run/entry.pid ]; then
