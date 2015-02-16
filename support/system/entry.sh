@@ -113,7 +113,6 @@ for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
 done
 unset i v
 
-# types: array (+), scalar (:), marker-true (%), marker-false (@)
 declare -a entry_vars_plain=()
 for v in "${entry_vars_only[@]}"; do
     entry_vars_plain+=($(echo $v | \
