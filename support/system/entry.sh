@@ -141,14 +141,6 @@ declare -a entry_vars_types=()
 done
 unset v t
 
-entry_vars_plain=()
-for v in "${entry_vars_only[@]}"; do
-    entry_vars_plain+=($(echo $v | sed 's/\+$//' | \
-                                sed 's/:$//'     | \
-                                sed 's/%$//'     | \
-                                sed 's/@$//'))
-done
-unset v
 declare -a entry_long_options=()
 for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
     lo=${entry_vars[i]}
