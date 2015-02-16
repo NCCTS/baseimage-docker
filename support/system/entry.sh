@@ -370,12 +370,7 @@ for v in "${ENTRY_RESET_ENV[@]}"; do
 done
 unset v v_def
 
-# doesn't account for ENTRY_ var types (i.e. casting to array) if such are
-# passed through entry --env; may need to augment w/ type/casting logic
 for pair in "${ENTRY_ENV[@]}"; do
-    # need to run pair through sed w/ backreference and get part up to =
-    # then do an eval-set-test; if not set then do...
-    eval "$(printf "%q " "$pair")"
 done
 unset pair
 
@@ -386,17 +381,9 @@ unset pair
     declare -a entry_white_norm=($(echo "${ENTRY_ENV_FILTER_WHITE[@]}" | \
     declare -a entry_black_norm=($(echo "${ENTRY_ENV_FILTER_BLACK[@]}" | \
 
-# ----------------------------
 
-echo
-echo "-----------------------"
-echo EARLY DEV EXIT '$? = 123'
-echo "-----------------------"
-echo
 
-exit 123
 
-# ----------------------------
     declare -a svc_fwd=($(echo "$svc" | sed '/-forwarder$/!d'))
 
 
@@ -413,123 +400,34 @@ exit 123
 
 
 
-entry_tmux=false
-if [ "${ENTRY_TMUX+set}" = set ]; then
-    entry_tmux=true
-fi
-if [[ $entry_tmux = true && $entry_tty = false ]]; then
-    echo "cannot start tmux without a tty:" '$(tty 2>&1) =' $(tty 2>&1) 1>&2
-    exit 1
-fi
 
-entry_users=(${ENTRY_USERS_DEFAULT// / })
-if [ "${ENTRY_USERS:+set}" = set ]; then
-    entry_users=(${ENTRY_USERS// / })
-fi
 echo
 echo "-----------------------"
 echo EARLY DEV EXIT '$? = 123'
 echo "-----------------------"
 echo
 
-entry_session="$ENTRY_SESSION_DEFAULT"
-if [ "${ENTRY_SESSION:+set}" = set ]; then
-    entry_session="$ENTRY_SESSION"
-fi
-# while getopts "s:" flag; do
-#     case "$flag" in
-#         s) entry_session=$OPTARG;;
-#     esac
-# done
-# shift $((OPTIND-1))
-entry_session_flag="-s $entry_session"
-entry_cmd=$*
 
-entry_login="$ENTRY_LOGIN_DEFAULT"
-if [ "${ENTRY_LOGIN:+set}" = set ]; then
-    entry_login="$ENTRY_LOGIN"
-fi
 
-entry_root=false
-if [ "$entry_login" = "root" ]; then
-    entry_root=true
-fi
-if [ "${ENTRY_ROOT+set}" = set ]; then
-    entry_login="root"
-    entry_root=true
-fi
 
-entry_env_home=$(eval echo ~$entry_login)
 
-entry_filter_first="$ENTRY_FILTER_FIRST_DEFAULT"
-if [ "${ENTRY_FILTER_FIRST:+set}" = set ]; then
-    if [[ "$ENTRY_FILTER_FIRST" = "black" || "$ENTRY_FILTER_FIRST" = "white" ]]; then
-        entry_filter_first="$ENTRY_FILTER_FIRST"
-    fi
-fi
 
-entry_env_all="$ENTRY_ENV_ALL_DEFAULT"
-if [ "${ENTRY_ENV_ALL:+set}" = set ]; then
-    entry_env_all="$ENTRY_ENV_ALL"
-fi
 
-white_list=false
-black_list=false
-if [[ $entry_root = true && ! "${ENTRY_ENV_WHITE:+set}" = set ]]; then
-    ENTRY_ENV_WHITE="$entry_env_all"
-fi
-if [ "${ENTRY_ENV_WHITE:+set}" = set ]; then
-    white_list=true
-    ENTRY_ENV_WHITE=$(echo $ENTRY_ENV_WHITE | sed 's/^ *//' | sed 's/ *$//' | sed 's/ \+/ /g')
-fi
-if [ "${ENTRY_ENV_BLACK:+set}" = set ]; then
-    black_list=true
-    ENTRY_ENV_BLACK=$(echo $ENTRY_ENV_BLACK | sed 's/^ *//' | sed 's/ *$//' | sed 's/ \+/ /g')
-fi
 
-filter_temp=
-filter_final=
-if [[ $white_list = true || $black_list = true ]]; then
-    if [[ $white_list = true && $black_list = true ]]; then
-        if [ "$entry_filter_first" = "white" ]; then
-            if [ "$ENTRY_ENV_WHITE" = "$entry_env_all" ]; then
-                filter_temp=$(cat /etc/container_environment.sh)
             else
-                filter_temp=$(sed '/export '"$(echo $ENTRY_ENV_WHITE | sed 's/ /\\|export /g')"'/!d' \
-                                  < /etc/container_environment.sh)
             fi
-            if [ "$ENTRY_ENV_BLACK" != "$entry_env_all" ]; then
-                filter_final="$(echo "$filter_temp" | \
-                    sed '/export '"$(echo $ENTRY_ENV_BLACK | sed 's/ /\\|export /g')"'/d')"
-                # if it was "$entry_env_all" then don't write to .entry_env
             fi
         else
-            if [ "$ENTRY_ENV_BLACK" != "$entry_env_all" ]; then
-                filter_temp=$(sed '/export '"$(echo $ENTRY_ENV_BLACK | sed 's/ /\\|export /g')"'/d' \
-                                  < /etc/container_environment.sh)
-                # if it was "$entry_env_all" then filter_temp remains empty
             fi
-            if [ "$ENTRY_ENV_WHITE" != "$entry_env_all" ]; then
-                filter_final="$(echo "$filter_temp" | \
-                    sed '/export '"$(echo $ENTRY_ENV_WHITE | sed 's/ /\\|export /g')"'/!d')"
             else
-                filter_final="$filter_temp"
             fi
         fi
     else
-        if [ $white_list = true ]; then
-            if [ "$ENTRY_ENV_WHITE" = "$entry_env_all" ]; then
-                filter_final="$(cat /etc/container_environment.sh)"
             else
-                filter_final="$(sed '/export '"$(echo $ENTRY_ENV_WHITE | sed 's/ /\\|export /g')"'/!d' \
                     < /etc/container_environment.sh)"
             fi
         fi
-        if [ $black_list = true ]; then
-            if [ "$ENTRY_ENV_BLACK" != "$entry_env_all" ]; then
-                filter_final="$(sed '/export '"$(echo $ENTRY_ENV_BLACK | sed 's/ /\\|export /g')"'/d' \
                     < /etc/container_environment.sh)"
-                # if it was "$entry_env_all" then don't write to .entry_env
             fi
         fi
     fi
