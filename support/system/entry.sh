@@ -393,6 +393,16 @@ entry_search_start () {
     echo "-1"
 }
 
+for v in "${entry_vars_plain[@]}"; do
+    i=$(entry_search_start $v)
+    if [ "$i" = "-1" ]; then
+        opt_v_test=$(eval "if [ \"\${opt_$v+set}\" = set ]; then echo true; fi")
+        if [ "$opt_v_test" = true ]; then
+            eval "$v=\"\$opt_$v\""
+        fi
+    fi
+done
+unset v i opt_v_test
 
                 eval "declare -a $v=(\$$v_def)"
             eval "declare -a $v=(\${$v[@]})"
