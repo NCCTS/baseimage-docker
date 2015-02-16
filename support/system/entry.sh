@@ -372,14 +372,23 @@ unset pair
 
                 eval "declare -a $v=(\$$v_def)"
             eval "declare -a $v=(\${$v[@]})"
+
+entry_white=false
+entry_black=false
+if [ "${ENTRY_ENV_FILTER_WHITE+set}" = set ]; then
+    entry_white=true
     declare -a entry_white_norm=($(echo "${ENTRY_ENV_FILTER_WHITE[@]}" | \
                                           sed 's/^ *//' | \
                                           sed 's/ *$//' | \
                                           sed 's/ \+/ /g'))
+fi
+if [ "${ENTRY_ENV_FILTER_BLACK+set}" = set ]; then
+    entry_black=true
     declare -a entry_black_norm=($(echo "${ENTRY_ENV_FILTER_BLACK[@]}" | \
                                           sed 's/^ *//' | \
                                           sed 's/ *$//' | \
                                           sed 's/ \+/ /g'))
+fi
 
 # serialiaze arrays, export ENTRY_ vars
 for i in "${!entry_vars_plain[@]}"; do
