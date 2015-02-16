@@ -525,6 +525,10 @@ if [ "$entry_ppid" = "1" ]; then
     fi
 fi
 
+entry_env_home=$(eval echo ~$ENTRY_LOGIN)
+if [ "$ENTRY_LOGIN" = "root" ]; then
+    ENTRY_ROOT=true
+fi
 
 
 
@@ -534,6 +538,7 @@ fi
 # debug w/ printenv before moving on
 # !!!
 
+# ----------------------------
 
 
 
@@ -545,6 +550,7 @@ echo "-----------------------"
 echo
 
 
+# ----------------------------
 
 
 
@@ -552,10 +558,6 @@ echo
 # need to think about how --env,--unset-env,--reset-env and --re-entry (or the lack of it)
 # affect how ~/.entry_env is processed and how env vars are passed through sudo
 
-entry_env_home=$(eval echo ~$ENTRY_LOGIN)
-if [ "$ENTRY_LOGIN" = "root" ]; then
-    ENTRY_ROOT=true
-fi
 # don't forget to account for _NONE in
 
 entry_filter_temp=
