@@ -376,6 +376,7 @@ unset v v_def
 
 # ^ same as above but sets/overwrites whether or not the var is already set
 for pair in "${ENTRY_ENV[@]}"; do
+    eval "export $(printf "%q " "$pair")"
 done
 unset pair
 
