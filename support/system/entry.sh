@@ -403,36 +403,7 @@ exit 123
 
 
 
-## DONT USE LCASE APPROACH BELOW, use the ENTRY_ env vars, which per the steps above should be properly set
 
-for (( i=0; i<${#entry_vars_only[@]} ; i+=1 )) ; do
-    v=${entry_vars_only[i]}
-    v_def=$v"_DEFAULT"
-    v_def_test=$(eval "if [ \"\${$v_def+set}\" = set ]; then echo true; fi")
-    if [ "$v_def_test" = true ]; then
-        v_lcase=$(echo $v | tr '[:upper:]' '[:lower:]')
-        t=${entry_vars_types[i]}
-        if [ "$t" = "array" ]; then
-            eval "$v_lcase=(\$$v_def)"
-        elif [ "$t" = "scalar" ]; then
-            eval "$v_lcase=\$$v_def"
-        elif [[ "$t" = "marker-true" || "$t" = "marker-false" ]]; then
-            eval v_def_actual=\$$v_def
-            if [ "$v_def_actual" = true ]; then
-                eval "$v_lcase=true"
-            elif [ "$v_def_actual" = false ]; then
-                eval "$v_lcase=false"
-            else
-                echo "ENTRY_ var marker types must be \"true\" or \"false\""
-                exit 1
-            fi
-        else
-            echo "unknown ENTRY_ var type"
-            exit 1
-        fi
-    fi
-done
-unset i v v_def v_def_test v_lcase t
 
 
 # !!!
