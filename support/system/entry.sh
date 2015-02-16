@@ -418,6 +418,10 @@ done
 unset i v t v_copy
 
 
+if [[ "$ENTRY_TMUX" = true && "$entry_tty" = false ]]; then
+    echo "cannot start tmux without a tty:" '$(tty 2>&1) =' $(tty 2>&1) 1>&2
+    exit 1
+fi
 
     declare -a svc_fwd=($(echo "$svc" | sed '/-forwarder$/!d'))
 
