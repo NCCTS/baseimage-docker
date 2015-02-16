@@ -402,11 +402,6 @@ exit 123
 
 
 
-# 4. set ENTRY_ env vars per other entry --options, but only if the env var is *not* already set
-#    and opt_ENTRY_ env var **is** set; make sure to account for type
-# 5. set ENTRY_ env vars which are not otherwise set, using the _DEFAULT values; make sure to
-#    account for type
-# 6. handle special cases, e.g. flipping ENTRY_ROOT if ENTRY_LOGIN is "root"
 
 ## DONT USE LCASE APPROACH BELOW, use the ENTRY_ env vars, which per the steps above should be properly set
 
