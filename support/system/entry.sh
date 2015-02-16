@@ -133,7 +133,6 @@ declare -a entry_vars_types=()
     elif [[ "$v" =~ @$ ]]; then
         t="marker-false"
     else
-        echo $v
         echo "unknown ENTRY_ var type"
         exit 1
     fi
