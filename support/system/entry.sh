@@ -124,6 +124,7 @@ done
 unset v
 
 declare -a entry_vars_types=()
+for v in "${entry_vars_only[@]}"; do
     if [[ "$v" =~ \+$ ]]; then
         t="array"
     elif [[ "$v" =~ :$ ]]; then
