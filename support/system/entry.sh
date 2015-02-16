@@ -330,6 +330,7 @@ while [ $# -gt 0 ]; do
 done
 unset i opt_v_len t v opt_v_test
 
+[ "$opt_ENTRY_HELP" = true ] && entry_usage
 if [ "$opt_ENTRY_KILL" = true ]; then
     if [ -e /var/run/entry.pid ]; then
         kill $(cat /var/run/entry.pid)
