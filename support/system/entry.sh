@@ -510,6 +510,8 @@ entry_stop_forward () {
     unset s
 }
 
+echo "$ENTRY_NO_FORWARD"
+echo "$entry_interactive"
 
 if [ "$entry_ppid" = "1" ]; then
     if [ "$ENTRY_NO_FORWARD" != "never" ]; then
@@ -535,6 +537,7 @@ fi
 
 
 
+# printenv | grep -v LS_COLOR
 
 # !!!
 # debug w/ printenv before moving on
@@ -551,6 +554,7 @@ echo EARLY DEV EXIT '$? = 123'
 echo "-----------------------"
 echo
 
+exit 123
 
 # ----------------------------
 
