@@ -166,18 +166,18 @@ declare -a entry_long_options_plain=($(echo ${entry_long_options[@]} | \
 declare -a entry_short_options=()
 for (( i=1; i<${#entry_vars[@]} ; i+=2 )) ; do
     so=${entry_vars[i]}
-    short_options+=($so)
+    entry_short_options+=($so)
 done
 unset i so
 declare -a entry_short_options_plain=($(echo ${entry_short_options[@]} | \
 
 # This text can and should be dynamically generated; needs option descriptions as well
-read -r -d '' usage_text_short << EOF
+read -r -d '' entry_usage_text_short << EOF
 
 Options:
 
   -e, --env=[]
-  -a, --env-filter-all=$ENTRY_ENV_ALL_DEFAULT
+  -a, --env-filter-all=$ENTRY_ENV_FILTER_ALL_DEFAULT
   -b, --env-filter-black=[]
   -f, --env-filter-first=white
   -n, --env-filter-none=:NONE:
@@ -194,7 +194,7 @@ Options:
 
 EOF
 
-read -r -d '' usage_text << EOF
+read -r -d '' entry_usage_text << EOF
 
 Usage: entry [OPTIONS] [COMMAND]
 
@@ -227,44 +227,43 @@ Interpretation of options described below, \`val\` indicates default setting:
   -s, --long=[]|[val ...]   =>  arg required (val is array member)
   -s, --long (=val)         =>  no arg (val is boolean, signifies missing opt)
 
-$usage_text_short
+$entry_usage_text_short
 
 EOF
 
-usage_short () {
+entry_usage_short () {
     echo
     echo "Use --help option for more information"
     echo
-    echo "$usage_text_short"
+    echo "$entry_usage_text_short"
     exit 0
 }
 
-usage () {
+entry_usage () {
     echo
-    echo "$usage_text"
+    echo "$entry_usage_text"
     exit 0
 }
 
-[ $# -eq 0 ] && usage_short
-gop=$(getopt -n$0 \
-             -u \
+[ $# -eq 0 ] && entry_usage_short
+gop="$(getopt -n$0 \
              -a \
              --longoptions \
-             "$(echo ${long_options[@]} | sed 's/ \+/,/g')" \
-             "$(echo ${short_options[@]} | sed 's/ \+//g')" \
-             "$@")
+             "$(echo ${entry_long_options[@]} | sed 's/ \+/,/g')" \
+             "$(echo ${entry_short_options[@]} | sed 's/ \+//g')" \
+             "$@")"
 
 if [ $? != 0 ]; then
-    usage_short
+    entry_usage_short
 fi
 
 eval set -- "$gop"
 unset gop
 
-search_long () {
+entry_search_long () {
     local i=0
     local str
-    for str in "${long_options_plain[@]}"; do
+    for str in "${entry_long_options_plain[@]}"; do
         if [ "--$str" = "$1" ]; then
             echo "$i"
             return
@@ -276,10 +275,10 @@ search_long () {
     echo "-1"
 }
 
-search_short () {
+entry_search_short () {
     local i=0
     local str
-    for str in "${short_options_plain[@]}"; do
+    for str in "${entry_short_options_plain[@]}"; do
         if [ "-$str" = "$1" ]; then
             echo "$i"
             return
