@@ -430,6 +430,11 @@ entry_users=(${ENTRY_USERS_DEFAULT// / })
 if [ "${ENTRY_USERS:+set}" = set ]; then
     entry_users=(${ENTRY_USERS// / })
 fi
+echo
+echo "-----------------------"
+echo EARLY DEV EXIT '$? = 123'
+echo "-----------------------"
+echo
 
 entry_session="$ENTRY_SESSION_DEFAULT"
 if [ "${ENTRY_SESSION:+set}" = set ]; then
