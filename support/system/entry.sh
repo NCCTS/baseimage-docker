@@ -292,35 +292,37 @@ while [ $# -gt 0 ]; do
     if [ "$i" = "-1" ]; then
         case "$t" in
             array)
-                eval "opt_v_len=\${#$opt_v[@]}"
+                eval "opt_v_len=\${#opt_$v[@]}"
                 (( --opt_v_len ))
-                eval "$opt_v[$opt_v_len]+=\" $1\""
+                eval "opt_$v[$opt_v_len]+=\" \$1\""
                 shift
                 ;;
             scalar)
-                eval "$opt_v+=\" $1\""
+                eval "opt_$v+=\" \$1\""
                 shift
                 ;;
         esac
     else
         t=${entry_vars_types[i]}
         v=${entry_vars_plain[i]}
-        opt_v="opt_"$v
+        opt_v_test=$(eval "if [ \"\${opt_$v+set}\" = set ]; then echo true; fi")
+        if [ "$opt_v_test" != true ]; then
             eval "declare -a opt_$v=()"
+        fi
         case "$t" in
             array)
-                eval "$opt_v+=($2)"
+                eval "opt_$v+=(\"\$2\")"
                 shift
                 ;;
             scalar)
-                eval "$opt_v=$2"
+                eval "opt_$v=\"\$2\""
                 shift
                 ;;
             marker-true)
-                eval "$opt_v=true"
+                eval "opt_$v=true"
                 ;;
             marker-false)
-                eval "$opt_v=false"
+                eval "opt_$v=false"
                 ;;
         esac
         shift
@@ -358,7 +360,7 @@ unset v
 
 for v in "${ENTRY_RESET_ENV[@]}"; do
     v_def=$v"_DEFAULT"
-    eval "$v=(\$$v_def)"
+    eval "export $v=\"\$$v_def\""
 done
 unset v v_def
 
