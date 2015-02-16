@@ -423,7 +423,14 @@ if [[ "$ENTRY_TMUX" = true && "$entry_tty" = false ]]; then
     exit 1
 fi
 
+entry_stop_forward () {
+    local svc=$(echo /etc/service/* | tr ' ' '\n')
     declare -a svc_fwd=($(echo "$svc" | sed '/-forwarder$/!d'))
+    for s in "${svc_fwd[@]}"; do
+        sv stop $s
+    done
+    unset s
+}
 
 
 if [ "$entry_ppid" = "1" ]; then
