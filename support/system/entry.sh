@@ -575,7 +575,6 @@ if [[ $white_list = true || $black_list = true ]]; then
     fi
 fi
 
-if [ $entry_tmux = true ]; then
 if [ "${entry_filter_final:+set}" = set ]; then
     for u in "${entry_users[@]}"; do
         h=$(eval echo "~$u")
@@ -585,6 +584,7 @@ if [ "${entry_filter_final:+set}" = set ]; then
 fi
 unset entry_filter_temp entry_filter_final
 
+if [ "$entry_tmux" = true ]; then
     if [ -n "$entry_cmd" ]; then
         tmux_cmd=(tmux new-session -A $entry_session_flag "$entry_cmd")
         sudo_cmd=(sudo -i -u \
