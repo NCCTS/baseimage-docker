@@ -149,13 +149,6 @@ for v in "${entry_vars_only[@]}"; do
                                 sed 's/@$//'))
 done
 unset v
-
-entry_vars_def=()
-for v in "${entry_vars_plain[@]}"; do
-    entry_vars_def+=($v"_DEFAULT")
-done
-unset v
-
 declare -a entry_long_options=()
 for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
     lo=${entry_vars[i]}
