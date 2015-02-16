@@ -7,6 +7,10 @@
 #     docker exec $container_id bash -c 'kill $(cat /var/run/entry.pid)'
 # }
 
+# neet to double-check that env vars trump cmd line switches, with override by
+# --unset-env, --reset-env; make sure to consider docker run and exec cases in
+# various dimensions of their usage, e.g. w.r.t. command-line one-offs
+# vs. Dockerfile spec of ENTRYPOINT, CMD, and so on
 
 # need both --reset-env and --re-entry
 # re_entry.sh will spec --re-entry
