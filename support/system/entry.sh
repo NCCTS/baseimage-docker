@@ -368,6 +368,20 @@ for pair in "${ENTRY_ENV[@]}"; do
 done
 unset pair
 
+entry_search_start () {
+    local i=0
+    local str
+    for str in "${entry_start[@]}"; do
+        if [ "-$str" = "$1" ]; then
+            echo "$i"
+            return
+        else
+            ((i++))
+        fi
+    done
+    unset str
+    echo "-1"
+}
 
 
                 eval "declare -a $v=(\$$v_def)"
