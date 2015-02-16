@@ -162,6 +162,7 @@ for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
 done
 unset i lo
 declare -a entry_long_options_plain=($(echo ${entry_long_options[@]} | \
+                                              sed 's/://g'))
 
 declare -a entry_short_options=()
 for (( i=1; i<${#entry_vars[@]} ; i+=2 )) ; do
@@ -170,6 +171,7 @@ for (( i=1; i<${#entry_vars[@]} ; i+=2 )) ; do
 done
 unset i so
 declare -a entry_short_options_plain=($(echo ${entry_short_options[@]} | \
+                                               sed 's/://g'))
 
 # This text can and should be dynamically generated; needs option descriptions as well
 read -r -d '' entry_usage_text_short << EOF
