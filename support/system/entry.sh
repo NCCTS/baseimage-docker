@@ -429,7 +429,25 @@ for i in "${!entry_vars_plain[@]}"; do
 done
 unset i v v_test v_def t
 
+for i in "${!entry_vars_plain[@]}"; do
+    v=${entry_vars_plain[$i]}
+    t=${entry_vars_types[$i]}
+    case "$t" in
+        array)
             eval "declare -a $v=(\${$v[@]})"
+            ;;
+        scalar)
+            eval "$v=\"\$$v\""
+            ;;
+        marker-true)
+            eval "$v=\$$v"
+            ;;
+        marker-false)
+            eval "$v=\$$v"
+            ;;
+    esac
+done
+unset i v t
 
 entry_white=false
 entry_black=false
