@@ -554,6 +554,7 @@ entry_env_home=$(eval echo ~$ENTRY_LOGIN)
 if [ "$ENTRY_LOGIN" = "root" ]; then
     ENTRY_ROOT=true
 fi
+# don't forget to account for _NONE in
 
 entry_filter_temp=
 entry_filter_final=
