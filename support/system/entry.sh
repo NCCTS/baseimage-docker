@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# for reference
-# -------------
-# shopt -q login_shell && echo login-shell || echo not-login-shell
-# [[ $- == *i* ]] && echo interactive || echo not-interactive
-# `getopt --test; echo $?`
-#    "4" - no bug
-#    "0" - bug
-# see: http://j.mp/1DrioUl (stackoverflow.com)
-# see also: http://journal.missiondata.com/post/63404248482/long-arguments-and-getops
-
 # helper function for use in dev/prod client setting
 # --------------------------------------------------
 # kill_entry () {
