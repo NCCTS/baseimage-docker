@@ -40,7 +40,7 @@
 entry_pid=$$
 entry_ppid=$(ps -p ${pid:-$$} -o ppid= | awk '{ print $1 }')
 if [ "$entry_ppid" = "1" ]; then
-    echo "$entry_pid" > /var/run/entry.pid
+    echo $entry_pid > /var/run/entry.pid
 fi
 
 entry_tty=true
