@@ -7,9 +7,6 @@
 #     docker exec $container_id bash -c 'kill $(cat /var/run/entry.pid)'
 # }
 
-# need a --no-forward (-N) flag which has 3 possible values: interactive, not-interactive, always
-# get dirs under /etc/service and match names against "-forwarder$"; for all matches, issue cmd:
-#   sv stop /etc/service/...-forwarder
 
 # need both --reset-env and --re-entry
 # re_entry.sh will spec --re-entry
