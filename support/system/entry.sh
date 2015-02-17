@@ -517,50 +517,76 @@ entry_env_home=$(eval echo ~$ENTRY_LOGIN)
 entry_filter_temp=
 entry_filter_final=
 if [[ "$entry_white" = true || "$entry_black" = true ]]; then
+    envvars_temp_file="$(envvars)"
+    envvars_txt="$(cat "$envvars_temp_file")"
     if [[ "$entry_white" = true && "$entry_black" = true ]]; then
         if [ "$ENTRY_ENV_FILTER_FIRST" = "white" ]; then
-            if [ "${entry_white_norm[@]}" = "$ENTRY_ENV_FILTER_ALL" ]; then
-                entry_filter_temp=$(cat /etc/container_environment.sh)
-            else
-                entry_filter_temp=$(sed '/export '"$(echo $entry_white_norm | sed 's/ /\\|export /g')"'/!d' \
-                                        < /etc/container_environment.sh)
+            if [ "$entry_white_norm" != "$ENTRY_ENV_FILTER_NONE" ]; then
+                if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
+                    entry_filter_temp="$envvars_txt"
+                else
+                    entry_filter_temp="$(echo "$envvars_txt" | \
+                                           sed -z "$(echo ${entry_white_norm[@]} | \
+                                                     sed 's/ /\\| /g')"'/!d')"
+                fi
             fi
-            if [ "${entry_black_norm[@]}" != "$ENTRY_ENV_FILTER_ALL" ]; then
-                entry_filter_final="$(echo "$entry_filter_temp" | \
-                    sed '/export '"$(echo $entry_black_norm | sed 's/ /\\|export /g')"'/d')"
-                # if it was "$ENTRY_ENV_FILTER_ALL" then don't write to .entry_env
+            if [ "$entry_black_norm" != "$ENTRY_ENV_FILTER_ALL" ]; then
+                if [ "$entry_black_norm" = "$ENTRY_ENV_FILTER_NONE" ]; then
+                    entry_filter_final="$entry_filter_temp"
+                else
+                    entry_filter_final="$(echo "$entry_filter_temp" | \
+                                           sed -z "$(echo ${entry_black_norm[@]} | \
+                                                     sed 's/ /\\| /g')"'/d')"
+                fi
             fi
         else
-            if [ "${entry_black_norm[@]}" != "$ENTRY_ENV_FILTER_ALL" ]; then
-                entry_filter_temp=$(sed '/export '"$(echo $entry_black_norm | sed 's/ /\\|export /g')"'/d' \
-                                        < /etc/container_environment.sh)
-                # if it was "$ENTRY_ENV_FILTER_ALL" then entry_filter_temp remains empty
+            if [ "$entry_black_norm" != "$ENTRY_ENV_FILTER_ALL" ]; then
+                if [ "$entry_black_norm" = "$ENTRY_ENV_FILTER_NONE" ]; then
+                    entry_filter_temp="$envvars_txt"
+                else
+                    entry_filter_temp="$(echo "$envvars_txt" | \
+                                           sed -z "$(echo ${entry_black_norm[@]} | \
+                                                     sed 's/ /\\| /g')"'/d')"
+                fi
             fi
-            if [ "${entry_white_norm[@]}" != "$ENTRY_ENV_FILTER_ALL" ]; then
-                entry_filter_final="$(echo "$entry_filter_temp" | \
-                    sed '/export '"$(echo $entry_white_norm | sed 's/ /\\|export /g')"'/!d')"
-            else
-                entry_filter_final="$entry_filter_temp"
+            if [ "$entry_white_norm" != "$ENTRY_ENV_FILTER_NONE" ]; then
+                if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
+                    entry_filter_final="$entry_filter_temp"
+                else
+                    entry_filter_final="$(echo "$entry_filter_temp" | \
+                                           sed -z "$(echo ${entry_white_norm[@]} | \
+                                                            sed 's/ /\\| /g')"'/!d')"
+                fi
             fi
         fi
     else
         if [ "$entry_white" = true ]; then
-            if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
-                entry_filter_final="$(cat /etc/container_environment.sh)"
-            else
-                entry_filter_final="$(sed '/export '"$(echo $entry_white_norm | sed 's/ /\\|export /g')"'/!d' \
-                    < /etc/container_environment.sh)"
+            if [ "$entry_white_norm" != "$ENTRY_ENV_FILTER_NONE" ]; then
+                if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
+                    entry_filter_final="$envvars_txt"
+                else
+                    entry_filter_final="$(echo "$envvars_txt" | \
+                                           sed -z "$(echo ${entry_white_norm[@]} | \
+                                                     sed 's/ /\\| /g')"'/!d')"
+                fi
             fi
         fi
         if [ "$entry_black" = true ]; then
             if [ "$entry_black_norm" != "$ENTRY_ENV_FILTER_ALL" ]; then
-                entry_filter_final="$(sed '/export '"$(echo $entry_black_norm | sed 's/ /\\|export /g')"'/d' \
-                    < /etc/container_environment.sh)"
-                # if it was "$ENTRY_ENV_FILTER_ALL" then don't write to .entry_env
+                if [ "$entry_black_norm" = "$ENTRY_ENV_FILTER_NONE" ]; then
+                    entry_filter_final="$envvars_txt"
+                else
+                    entry_filter_final="$(echo "$envvars_txt" | \
+                                                 sed -z "$(echo ${entry_black_norm[@]} | \
+                                                     sed 's/ /\\| /g')"'/d')"
+                fi
             fi
         fi
     fi
+    entry_filter_final="$(echo "$entry_filter_final" | tr '\000' ' ')"
 fi
+rm "$envvars_temp_file"
+unset entry_filter_temp envvars_temp_file envvars_txt
 
 if [ "${entry_filter_final:+set}" = set ]; then
     for u in "${entry_users[@]}"; do
