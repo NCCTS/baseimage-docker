@@ -219,7 +219,7 @@ entry_usage () {
 gop="$(getopt -n$0 \
              -a \
              --longoptions \
-             "$(echo ${entry_long_options[@]} | sed 's/ \+/,/g')" \
+             "$(echo ${entry_long_options[@]}  | sed 's/ \+/,/g')" \
              "$(echo ${entry_short_options[@]} | sed 's/ \+//g')" \
              "$@")"
 
