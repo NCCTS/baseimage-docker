@@ -306,6 +306,7 @@ while [ $# -gt 0 ]; do
     fi
 done
 unset i opt_v_len t v opt_v_test
+entry_cmd="$*"
 
 [ "$opt_ENTRY_HELP" = true ] && entry_usage
 if [ "$opt_ENTRY_KILL" = true ]; then
