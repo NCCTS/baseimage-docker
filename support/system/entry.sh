@@ -378,7 +378,7 @@ for v in "${entry_vars_plain[@]}"; do
     if [ "$i" = "-1" ]; then
         opt_v_test=$(eval "if [ \"\${opt_$v+set}\" = set ]; then echo true; fi")
         if [ "$opt_v_test" = true ]; then
-            eval "$v=\"\$opt_$v\""
+            eval "$v=\"\${opt_$v[@]}\""
         fi
     fi
 done
