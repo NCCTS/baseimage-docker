@@ -598,7 +598,7 @@ if [ "$ENTRY_TMUX" = true ]; then
     entry_empty_cmd=""
 else
     if [ "$entry_tty" = true ]; then
-        entry_empty_cmd="bash -l"
+        entry_empty_cmd="bash"
     else
         entry_empty_cmd="sleep_all_day"
     fi
