@@ -36,46 +36,38 @@ docker run -it --rm --env ENTRY_ROOT nccts/baseimage top
 docker run -it --rm --env ENTRY_LOGIN=root nccts/baseimage top
 
 docker run -it --rm --env ENTRY_TMUX nccts/baseimage \
-    tmux new-window -n win0 -d top \;          \
-    tmux new-window -n win1 -d top \;          \
-    tmux new-window -n win2
+tmux new-window -n win0 -d top \;                    \
+tmux new-window -n win1 -d top \;                    \
+tmux new-window -n win2
 
 docker run -it --rm --env ENTRY_TMUX nccts/baseimage ' \
-    tmux new-window -n win0 -d "top -u root"   ; \
-    tmux new-window -n win1 -d "top -u sailor" ; \
-    tmux new-window -n win2'
+tmux new-window -n win0 -d "top -u root"   ;           \
+tmux new-window -n win1 -d "top -u sailor" ;           \
+tmux new-window -n win2'
 
 docker run -it --rm --env ENTRY_TMUX nccts/baseimage " \
-    tmux new-window -n win0 -d 'top -u root'   ; \
-    tmux new-window -n win1 -d 'top -u sailor' ; \
-    tmux new-window -n win2"
+tmux new-window -n win0 -d 'top -u root'   ;           \
+tmux new-window -n win1 -d 'top -u sailor' ;           \
+tmux new-window -n win2"
 
 docker run -it --rm --env ENTRY_TMUX nccts/baseimage "$(cat << 'EOF'
-    tmux new-window -n win0 -d 'top -u root'   ;
-    tmux new-window -n win1 -d 'top -u sailor' ;
-    tmux new-window -n win2
+tmux new-window -n win0 -d 'top -u root'   ;
+tmux new-window -n win1 -d 'top -u sailor' ;
+tmux new-window -n win2
 EOF
 )"
 
 read -r -d '' entry_cmd << 'EOF'
-    tmux new-window -n win0 -d 'top -u root'   ;
-    tmux new-window -n win1 -d 'top -u sailor' ;
-    tmux new-window -n win2
+tmux new-window -n win0 -d 'top -u root'   ;
+tmux new-window -n win1 -d 'top -u sailor' ;
+tmux new-window -n win2
 EOF
 docker run -it --rm --env ENTRY_TMUX nccts/baseimage "$entry_cmd"
 
-read -r -d '' entry_cmd << 'EOF'
-    tmux new-window -n win0 -d 'top -u root'
-    tmux new-window -n win1 -d 'top -u sailor'
-    tmux new-window -n win2
-EOF
-entry_cmd="eval $(printf "%q " "$entry_cmd")"
-docker run -it --rm --env ENTRY_TMUX nccts/baseimage "$entry_cmd"
-
-{ entry_cmd="eval $(cat)"; } << 'EOF'
-    tmux new-window -n win0 -d 'top -u root'
-    tmux new-window -n win1 -d 'top -u sailor'
-    tmux new-window -n win2
+{ entry_cmd="$(cat)"; } << 'EOF'
+tmux new-window -n win0 -d 'top -u root'   ;
+tmux new-window -n win1 -d 'top -u sailor' ;
+tmux new-window -n win2
 EOF
 docker run -it --rm --env ENTRY_TMUX nccts/baseimage:0.0.11 "$entry_cmd"
 ```
