@@ -490,9 +490,6 @@ entry_stop_forward () {
     unset s
 }
 
-echo "$ENTRY_NO_FORWARD"
-echo "$entry_interactive"
-
 if [ "$entry_ppid" = "1" ]; then
     if [ "$ENTRY_NO_FORWARD" != "never" ]; then
         if [ "$ENTRY_NO_FORWARD" = "always" ]; then
