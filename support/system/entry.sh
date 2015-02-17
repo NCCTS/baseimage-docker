@@ -309,6 +309,7 @@ unset i opt_v_len t v opt_v_test
 entry_cmd="$*"
 
 [ "$opt_ENTRY_HELP" = true ] && entry_usage
+
 if [ "$opt_ENTRY_KILL" = true ]; then
     if [ -e /var/run/entry.pid ]; then
         kill $(cat /var/run/entry.pid)
@@ -343,20 +344,19 @@ for v in "${ENTRY_RESET_ENV[@]}"; do
 done
 unset v v_def
 
+for pair in "${ENTRY_ENV[@]}"; do
+    v="$(echo "$pair" | grep -o ^.\*= | sed 's/=$//')"
+    v_test=$(eval "if [ \"\${$v+set}\" = set ]; then echo true; fi")
+    if [ "$v_test" != true ]; then
+        eval "$(printf "%q " "$pair")"
+    fi
+done
+unset pair v v_test
+# ^ same as above but sets/overwrites whether or not the var is already set
 # for pair in "${ENTRY_ENV[@]}"; do
-#     v="$(echo "$pair" | grep -o ^.\*= | sed 's/=$//')"
-#     v_test=$(eval "if [ \"\${$v+set}\" = set ]; then echo true; fi")
-#     if [ "$v_test" != true ]; then
-#         eval "$(printf "%q " "$pair")"
-#     fi
+#     eval "export $(printf "%q " "$pair")"
 # done
 # unset pair
-
-# ^ same as above but sets/overwrites whether or not the var is already set
-for pair in "${ENTRY_ENV[@]}"; do
-    eval "export $(printf "%q " "$pair")"
-done
-unset pair
 
 entry_search_start () {
     local i=0
