@@ -588,12 +588,6 @@ fi
 rm "$envvars_temp_file"
 unset entry_filter_temp envvars_temp_file envvars_txt
 
-if [ "${entry_filter_final:+set}" = set ]; then
-    for u in "${entry_users[@]}"; do
-        h=$(eval echo "~$u")
-        echo "$entry_filter_final" > $h/.entry_env
-    done
-    unset u h
 fi
 unset entry_filter_temp entry_filter_final
 
