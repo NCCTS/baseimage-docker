@@ -348,7 +348,7 @@ for pair in "${ENTRY_ENV[@]}"; do
     v="$(echo "$pair" | grep -o ^.\*= | sed 's/=$//')"
     v_test=$(eval "if [ \"\${$v+set}\" = set ]; then echo true; fi")
     if [ "$v_test" != true ]; then
-        eval "$(printf "%q " "$pair")"
+        eval "export $(printf "%q " "$pair")"
     fi
 done
 unset pair v v_test
