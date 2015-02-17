@@ -604,36 +604,45 @@ else
     fi
 fi
 
+if [ "$ENTRY_TMUX" = true ]; then
     if [ -n "$entry_cmd" ]; then
-        tmux_cmd=(tmux new-session -A $entry_session_flag "$entry_cmd")
+        tmux_cmd=(tmux new-session -A "$entry_session_flag" "$entry_cmd")
         sudo_cmd=(sudo -i -u \
-                       $entry_login \
+                       "$ENTRY_LOGIN" \
+                       "$entry_filter_final" \
                        "ENTRY_BASH_ENV=" \
+                       "$entry_bash_env_preserve" \
                        "BASH_ENV=$entry_env_home/.bash_env_wrap" \
                        bash -c \
                        "$(printf "%q " "${tmux_cmd[@]}")")
         eval "$(printf "%q " "${sudo_cmd[@]}")"
     else
         sudo -i -u \
-             $entry_login \
+             "$ENTRY_LOGIN" \
+             "$entry_filter_final" \
              "ENTRY_BASH_ENV=" \
+             "$entry_bash_env_preserve" \
              "BASH_ENV=$entry_env_home/.bash_env_wrap" \
-             tmux new-session -A $entry_session_flag
+             tmux new-session -A "$entry_session_flag" "$entry_empty_cmd"
     fi
 else
     if [ -n "$entry_cmd" ]; then
         sudo_cmd=(sudo -i -u \
-                       $entry_login \
+                       "$ENTRY_LOGIN" \
+                       "$entry_filter_final" \
                        "ENTRY_BASH_ENV=" \
+                       "$entry_bash_env_preserve" \
                        "BASH_ENV=$entry_env_home/.bash_env_wrap" \
                        bash -c \
                        "$entry_cmd")
         eval "$(printf "%q " "${sudo_cmd[@]}")"
     else
         sudo -i -u \
-             $entry_login \
+             "$ENTRY_LOGIN" \
+             "$entry_filter_final" \
              "ENTRY_BASH_ENV=" \
+             "$entry_bash_env_preserve" \
              "BASH_ENV=$entry_env_home/.bash_env_wrap" \
-             bash -l
+             "$entry_empty_cmd"
     fi
 fi
