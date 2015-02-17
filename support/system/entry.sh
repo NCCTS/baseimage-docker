@@ -408,6 +408,7 @@ for i in "${!entry_vars_plain[@]}"; do
 done
 unset i v v_test v_def t
 
+# final pass to make sure arrays are arrays, etc.
 for i in "${!entry_vars_plain[@]}"; do
     v=${entry_vars_plain[$i]}
     t=${entry_vars_types[$i]}
