@@ -70,10 +70,8 @@ declare -a entry_vars=(
     l:
     ENTRY_NO_FORWARD:
     F:
-    ENTRY_RE_ENTRY%
-    r
     ENTRY_RESET_ENV+
-    E:
+    r:
     ENTRY_ROOT%
     R
     ENTRY_SESSION:
@@ -81,9 +79,9 @@ declare -a entry_vars=(
     ENTRY_TMUX%
     t
     ENTRY_UNSET_ENV+
-    U:
-    ENTRY_USERS+
     u:
+    ENTRY_USERS+
+    U:
 )
 declare -a entry_vars_only=()
 for (( i=0; i<${#entry_vars[@]} ; i+=2 )) ; do
@@ -157,7 +155,6 @@ Options:
   -w, --env-filter-white=[]
   -h, --help (=false)
   -l, --login=sailor
-  -r, --re-entry (=false)
   -E, --reset-env=[]
   -R, --root (=false)
   -s, --session=base
@@ -264,7 +261,7 @@ entry_search_short () {
 }
 
 while [ $# -gt 0 ]; do
-    [ "$1" = "--" ] && break
+    [ "$1" = "--" ] && shift && break
     i=$(entry_search_long "$1")
     if [ "$i" = "-1" ]; then
         i=$(entry_search_short "$1")
