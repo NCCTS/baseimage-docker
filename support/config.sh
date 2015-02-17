@@ -29,7 +29,3 @@ apt-get -y install \
 cp /docker-build/support/system/entry.sh /usr/local/bin/entry
 chmod 744 /usr/local/bin/entry
 
-cp /docker-build/support/system/re_entry.sh /usr/local/bin/re_entry
-chmod 744 /usr/local/bin/re_entry
-ln -s /usr/local/bin/re_entry /usr/local/bin/re-entry
-ln -s /usr/local/bin/re_entry /usr/local/bin/reentry
