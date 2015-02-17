@@ -592,9 +592,18 @@ entry_bash_env_preserve=
 if [ "${BASH_ENV:+set}" = set ]; then
     entry_bash_env_preserve="ENTRY_BASH_ENV_PRESERVE=$BASH_ENV"
 fi
-unset entry_filter_temp entry_filter_final
 
-if [ "$entry_tmux" = true ]; then
+entry_empty_cmd=
+if [ "$ENTRY_TMUX" = true ]; then
+    entry_empty_cmd=""
+else
+    if [ "$entry_tty" = true ]; then
+        entry_empty_cmd="bash -l"
+    else
+        entry_empty_cmd="sleep_all_day"
+    fi
+fi
+
     if [ -n "$entry_cmd" ]; then
         tmux_cmd=(tmux new-session -A $entry_session_flag "$entry_cmd")
         sudo_cmd=(sudo -i -u \
