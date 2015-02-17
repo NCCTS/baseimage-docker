@@ -506,10 +506,13 @@ if [ "$entry_ppid" = "1" ]; then
     fi
 fi
 
-entry_env_home=$(eval echo ~$ENTRY_LOGIN)
 if [ "$ENTRY_LOGIN" = "root" ]; then
     ENTRY_ROOT=true
 fi
+if [ "$ENTRY_ROOT" = "true" ]; then
+    ENTRY_LOGIN="root"
+fi
+entry_env_home=$(eval echo ~$ENTRY_LOGIN)
 
 entry_filter_temp=
 entry_filter_final=
