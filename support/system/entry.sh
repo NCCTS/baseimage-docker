@@ -606,7 +606,11 @@ fi
 
 if [ "$ENTRY_TMUX" = true ]; then
     if [ -n "$entry_cmd" ]; then
-        tmux_cmd=(tmux new-session -A "$entry_session_flag" "$entry_cmd")
+        if [ "${ENTRY_SESSION:+set}" = set ]; then
+            tmux_cmd=(tmux new-session -A -s "$ENTRY_SESSION" "$entry_cmd")
+        else
+            tmux_cmd=(tmux new-session -A "$entry_cmd")
+        fi
         sudo_cmd_1=(sudo -i -u
                     "$ENTRY_LOGIN"
                     "$entry_filter_final"
