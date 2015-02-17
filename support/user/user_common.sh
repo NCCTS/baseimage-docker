@@ -1,6 +1,6 @@
 #!/bin/bash
 
-touch $HOME/.entry_env
+# touch $HOME/.entry_env
 
 rm -rf $HOME/.bash_logout
 

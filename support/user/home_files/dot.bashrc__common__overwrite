@@ -73,7 +73,11 @@ fi
 if [[ "${ENTRY_BASH_ENV+set}" = set && "${BASH_ENV+set}" = set ]]; then
     unset ENTRY_BASH_ENV
     unset BASH_ENV
-    if [ -f ~/.entry_env ]; then
-        . ~/.entry_env
+    if [ "${ENTRY_BASH_ENV_PRESERVE:+set}" = set ]; then
+        export BASH_ENV="$ENTRY_BASH_ENV_PRESERVE"
+        unset ENTRY_BASH_ENV_PRESERVE
     fi
+    # if [ -f ~/.entry_env ]; then
+    #     . ~/.entry_env
+    # fi
 fi
