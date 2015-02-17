@@ -588,6 +588,9 @@ fi
 rm "$envvars_temp_file"
 unset entry_filter_temp envvars_temp_file envvars_txt
 
+entry_bash_env_preserve=
+if [ "${BASH_ENV:+set}" = set ]; then
+    entry_bash_env_preserve="ENTRY_BASH_ENV_PRESERVE=$BASH_ENV"
 fi
 unset entry_filter_temp entry_filter_final
 
