@@ -7,35 +7,27 @@
 #     docker exec $container_id bash -c 'kill $(cat /var/run/entry.pid)'
 # }
 
-# neet to double-check that env vars trump cmd line switches, with override by
-# --unset-env, --reset-env; make sure to consider docker run and exec cases in
-# various dimensions of their usage, e.g. w.r.t. command-line one-offs
-# vs. Dockerfile spec of ENTRYPOINT, CMD, and so on
+# the following are helpful references
+# ------------------------------------
+# entry_interactive=
+# [[ $- == *i* ]] \
+#     && entry_interactive=true \
+#         || entry_interactive=false
 
-# need both --reset-env and --re-entry
-# re_entry.sh will spec --re-entry
-# the effect is to skip over the env filters and not write to .entry_env; however the usual
-# source'ing of that file will apply in the sudo -i -u context; additinoal --env supplied to entry
-# will be spec'd in the same way BASH_ENV is spec'd to sudo -i -u
+# entry_login_shell=
+# shopt -q login_shell \
+#     && entry_login_shell=true \
+#         || entry_login_shell=false
 
-# will need "special" flag/flag-processing to allow env vars to be passed to entry.sh / re_entry.sh
-# consider:
-#   eval "$([ ! ${#myarr[@]} -eq 0] && printf "%q " "${myarr[@]}") bash -c 'ls ; echo \$nibs ; echo \$jims ; ls'"
-#   myarr=() ; myarr+=( nibs=123 ) ; myarr+=( jims='456 789' )
-# could loop over --env pairs supplied to entry.sh with help of getopt,getopts
-# the goal here is to allow docker exec to be supplied with vars which will get poperly passed
-# on to the string-command/heredoc-command, since sudo will strip them out if set in the string/heredoc
-# the thing to remember is that we don't want those to be (or to need to be) proc'd with ENV_ENTRY_WHITE
-# etc. since we don't want to mess w/ .entry_env in an docker exec context; they should just be
-# shunted in along with ENTRY_BASH_ENV and BASH_ENV; in the docker run case, since the Dockerfile
-# entrypoint wouldn't use the --env flag, there simply won't be any
+# consider moving entry_vars array (but seralized as a string) into Dockerfile
 
-# write out an "expectations" markdown file which can serve as a set of tests
-#   to be performed to see that entry.sh and all dotfiles, etc. are in place as
-#   expected
+# think about --append-env to complement --unset-env and --reset-env; could be
+# helpful for ENTRY_ env vars and those set w/ --env
 
-# non-interactive default command would be to sleep indefinitely
-#   but don't use infinity because that works out to ~24 days; instead sleep for 86400 in a loop
+# write out an "expectations" markdown file which can serve as a set of tests to
+# be performed to see that entry.sh and all dotfiles, etc. are in place as
+# expected... better yet, learn to use tcl expect framework to write tests
+# for `docker run` and `docker exec`
 
 entry_pid=$$
 entry_ppid=$(ps -p ${pid:-$$} -o ppid= | awk '{ print $1 }')
@@ -56,19 +48,6 @@ else
     entry_interactive=false
 fi
 
-# the following are helpful refs but not reliable in the context of entry itself
-# ------------------------------------------------------------------------------
-# entry_interactive=
-# [[ $- == *i* ]] \
-#     && entry_interactive=true \
-#         || entry_interactive=false
-
-# entry_login_shell=
-# shopt -q login_shell \
-#     && entry_login_shell=true \
-#         || entry_login_shell=false
-
-# consider moving the array below (but seralized as string) into Dockerfile
 # types: array (+), scalar (:), marker-true (%), marker-false (@)
 declare -a entry_vars=(
     ENTRY_ENV+
@@ -165,7 +144,7 @@ unset i so
 declare -a entry_short_options_plain=($(echo ${entry_short_options[@]} | \
                                                sed 's/://g'))
 
-# This text can and should be dynamically generated; needs option descriptions as well
+# This text can/should be dynamically generated; needs opt-descriptions as well
 read -r -d '' entry_usage_text_short << EOF
 
 Options:
@@ -533,38 +512,6 @@ entry_env_home=$(eval echo ~$ENTRY_LOGIN)
 if [ "$ENTRY_LOGIN" = "root" ]; then
     ENTRY_ROOT=true
 fi
-
-
-
-
-# printenv | grep -v LS_COLOR
-
-# !!!
-# debug w/ printenv before moving on
-# !!!
-
-# ----------------------------
-
-
-
-
-echo
-echo "-----------------------"
-echo EARLY DEV EXIT '$? = 123'
-echo "-----------------------"
-echo
-
-exit 123
-
-# ----------------------------
-
-
-
-
-# need to think about how --env,--unset-env,--reset-env and --re-entry (or the lack of it)
-# affect how ~/.entry_env is processed and how env vars are passed through sudo
-
-# don't forget to account for _NONE in
 
 entry_filter_temp=
 entry_filter_final=
