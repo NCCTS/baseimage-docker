@@ -29,5 +29,8 @@ apt-get -y install \
 cp /docker-build/support/system/entry.sh /usr/local/bin/entry
 chmod 744 /usr/local/bin/entry
 
+cp /docker-build/support/system/envvars.py /usr/local/bin/envvars
+chmod 755 /usr/local/bin/envvars
+
 cp /docker-build/support/system/sleep_all_day.sh /usr/local/bin/sleep_all_day
 chmod 755 /usr/local/bin/sleep_all_day
