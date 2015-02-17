@@ -506,48 +506,52 @@ if [ "$ENTRY_ROOT" = "true" ]; then
 fi
 entry_env_home=$(eval echo ~$ENTRY_LOGIN)
 
-entry_filter_temp=
+entry_filter_temp_file="$(mktemp)"
+entry_filter_final_file="$(mktemp)"
 entry_filter_final=
 if [[ "$entry_white" = true || "$entry_black" = true ]]; then
     envvars_temp_file="$(envvars)"
-    envvars_txt="$(cat "$envvars_temp_file")"
     if [[ "$entry_white" = true && "$entry_black" = true ]]; then
         if [ "$ENTRY_ENV_FILTER_FIRST" = "white" ]; then
             if [ "$entry_white_norm" != "$ENTRY_ENV_FILTER_NONE" ]; then
                 if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
-                    entry_filter_temp="$envvars_txt"
+                    cat "$envvars_temp_file" > "$entry_filter_temp_file"
                 else
-                    entry_filter_temp="$(echo "$envvars_txt" | \
-                                           sed -z "$(echo ${entry_white_norm[@]} | \
-                                                     sed 's/ /\\| /g')"'/!d')"
+                    cat "$envvars_temp_file" | \
+                        sed -z '/^'"$(echo ${entry_white_norm[@]} | \
+                            sed 's/ /\\|^/g')"'/!d' \
+                            > "$entry_filter_temp_file"
                 fi
             fi
             if [ "$entry_black_norm" != "$ENTRY_ENV_FILTER_ALL" ]; then
                 if [ "$entry_black_norm" = "$ENTRY_ENV_FILTER_NONE" ]; then
-                    entry_filter_final="$entry_filter_temp"
+                    cat "$entry_filter_temp_file" > "$entry_filter_final_file"
                 else
-                    entry_filter_final="$(echo "$entry_filter_temp" | \
-                                           sed -z "$(echo ${entry_black_norm[@]} | \
-                                                     sed 's/ /\\| /g')"'/d')"
+                    cat "$entry_filter_temp_file" | \
+                        sed -z '/^'"$(echo ${entry_black_norm[@]} | \
+                            sed 's/ /\\|^/g')"'/d' \
+                            > "$entry_filter_final_file"
                 fi
             fi
         else
             if [ "$entry_black_norm" != "$ENTRY_ENV_FILTER_ALL" ]; then
                 if [ "$entry_black_norm" = "$ENTRY_ENV_FILTER_NONE" ]; then
-                    entry_filter_temp="$envvars_txt"
+                    cat "$envvars_temp_file" > "$entry_filter_temp_file"
                 else
-                    entry_filter_temp="$(echo "$envvars_txt" | \
-                                           sed -z "$(echo ${entry_black_norm[@]} | \
-                                                     sed 's/ /\\| /g')"'/d')"
+                    cat "$envvars_temp_file" | \
+                        sed -z '/^'"$(echo ${entry_black_norm[@]} | \
+                            sed 's/ /\\|^/g')"'/d' \
+                            > "$entry_filter_temp_file"
                 fi
             fi
             if [ "$entry_white_norm" != "$ENTRY_ENV_FILTER_NONE" ]; then
                 if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
-                    entry_filter_final="$entry_filter_temp"
+                    cat "$entry_filter_temp_file" > "$entry_filter_final_file"
                 else
-                    entry_filter_final="$(echo "$entry_filter_temp" | \
-                                           sed -z "$(echo ${entry_white_norm[@]} | \
-                                                            sed 's/ /\\| /g')"'/!d')"
+                    echo "$entry_filter_temp_file" | \
+                        sed -z '/^'"$(echo ${entry_white_norm[@]} | \
+                            sed 's/ /\\|^/g')"'/!d' \
+                            > "$entry_filter_final_file"
                 fi
             fi
         fi
@@ -555,30 +559,34 @@ if [[ "$entry_white" = true || "$entry_black" = true ]]; then
         if [ "$entry_white" = true ]; then
             if [ "$entry_white_norm" != "$ENTRY_ENV_FILTER_NONE" ]; then
                 if [ "$entry_white_norm" = "$ENTRY_ENV_FILTER_ALL" ]; then
-                    entry_filter_final="$envvars_txt"
+                    cat "$envvars_temp_file" > "$entry_filter_final_file"
                 else
-                    entry_filter_final="$(echo "$envvars_txt" | \
-                                           sed -z "$(echo ${entry_white_norm[@]} | \
-                                                     sed 's/ /\\| /g')"'/!d')"
+                    cat "$envvars_temp_file" | \
+                        sed -z '/^'"$(echo ${entry_white_norm[@]} | \
+                            sed 's/ /\\|^/g')"'/!d' \
+                            > "$entry_filter_final_file"
                 fi
             fi
         fi
         if [ "$entry_black" = true ]; then
             if [ "$entry_black_norm" != "$ENTRY_ENV_FILTER_ALL" ]; then
                 if [ "$entry_black_norm" = "$ENTRY_ENV_FILTER_NONE" ]; then
-                    entry_filter_final="$envvars_txt"
+                    cat "$envvars_temp_file" > "$entry_filter_final_file"
                 else
-                    entry_filter_final="$(echo "$envvars_txt" | \
-                                                 sed -z "$(echo ${entry_black_norm[@]} | \
-                                                     sed 's/ /\\| /g')"'/d')"
+                    cat "$envvars_temp_file" | \
+                        sed -z '/^'"$(echo ${entry_black_norm[@]} | \
+                            sed 's/ /\\|^/g')"'/d' \
+                            > "$entry_filter_final_file"
                 fi
             fi
         fi
     fi
-    entry_filter_final="$(echo "$entry_filter_final" | tr '\000' ' ')"
+    entry_filter_final="$(cat "$entry_filter_final_file" | tr '\000' ' ')"
 fi
+rm "$entry_filter_temp_file"
+rm "$entry_filter_final_file"
 rm "$envvars_temp_file"
-unset entry_filter_temp envvars_temp_file envvars_txt
+unset entry_filter_temp_file entry_filter_final_file envvars_temp_file
 
 entry_bash_env_preserve=
 if [ "${BASH_ENV:+set}" = set ]; then
