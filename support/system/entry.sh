@@ -603,10 +603,10 @@ fi
 
 entry_empty_cmd=
 if [ "$ENTRY_TMUX" = true ]; then
-    entry_empty_cmd="sleep_all_day"
+    entry_empty_cmd="bash -l"
 else
     if [ "$entry_tty" = true ]; then
-        entry_empty_cmd="sleep_all_day"
+        entry_empty_cmd="bash -l"
     else
         entry_empty_cmd="sleep_all_day"
     fi
