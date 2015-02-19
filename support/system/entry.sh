@@ -481,7 +481,6 @@ if [[ "$ENTRY_TMUX" = true && "$entry_tty" = false ]]; then
     echo "cannot start tmux without a tty:" '$(tty 2>&1) =' \"$(tty 2>&1)\" 1>&2
     exit 1
 fi
-entry_session_flag="-s $ENTRY_SESSION"
 
 entry_stop_forward () {
     local svc=$(echo /etc/service/* | tr ' ' '\n')
