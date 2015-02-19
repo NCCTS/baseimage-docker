@@ -66,3 +66,5 @@ proc_home_files () {
 proc_home_files
 
 git clone --depth 1 https://github.com/michaelsbradleyjr/bash-it.git $HOME/.bash_it
+
+echo will cite | parallel --bibtex
