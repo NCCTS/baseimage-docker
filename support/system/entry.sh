@@ -605,10 +605,10 @@ fi
 
 entry_empty_cmd=
 if [ "$ENTRY_TMUX" = true ]; then
-    entry_empty_cmd=""
+    entry_empty_cmd="sleep_all_day"
 else
     if [ "$entry_tty" = true ]; then
-        entry_empty_cmd="bash"
+        entry_empty_cmd="sleep_all_day"
     else
         entry_empty_cmd="sleep_all_day"
     fi
