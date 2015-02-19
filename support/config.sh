@@ -16,6 +16,8 @@ apt-get -y install \
         g++ \
         gcc \
         git-core \
+        htop \
+        iftop \
         libc6-dev \
         libncurses5-dev \
         libpcre3-dev \
@@ -23,6 +25,7 @@ apt-get -y install \
         make \
         man-db \
         pkg-config \
+        rlwrap \
         software-properties-common \
         tcl \
         wget \
