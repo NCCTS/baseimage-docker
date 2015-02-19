@@ -593,9 +593,7 @@ if [[ "$entry_white" = true || "$entry_black" = true ]]; then
     fi
     entry_filter_final="$(cat "$entry_filter_final_file" | tr '\000' ' ')"
 fi
-rm "$entry_filter_temp_file"
-rm "$entry_filter_final_file"
-rm "$envvars_temp_file"
+rm "$entry_filter_temp_file" "$entry_filter_final_file" "$envvars_temp_file"
 unset entry_filter_temp_file entry_filter_final_file envvars_temp_file
 
 entry_bash_env_preserve=
