@@ -1,9 +1,11 @@
 unbind-key C-b
-set-option -g prefix 'M-\'
 set-option -g default-terminal "screen-256color"
+set-option -g prefix 'M-\'
 set-option -g set-titles on
 set-option -g set-titles-string "#S#{?session_grouped,(#{session_group}),}:#I:#W - "#T""
-set-option -g status-left "[#S#{?session_grouped,(#{session_group}),}]"
-set-window-option -g xterm-keys on
+set-option -g status-bg colour202
 set-option -g status-keys emacs
+set-option -g status-left "[#S#{?session_grouped,(#{session_group}),}]"
+set-option -g status-right "#(whoami) \"#{=22:pane_title}\" %H:%M %d-%b-%y"
 set-window-option -g mode-keys emacs
+set-window-option -g xterm-keys on
