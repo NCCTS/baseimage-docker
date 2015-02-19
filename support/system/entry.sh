@@ -228,7 +228,9 @@ gop="$(getopt -n$0 \
              -a \
              --longoptions \
              "$(echo ${entry_long_options[@]}  | sed 's/ \+/,/g')" \
+             --options \
              "$(echo ${entry_short_options[@]} | sed 's/ \+//g')" \
+             "--" \
              "$@")"
 
 if [ $? != 0 ]; then
