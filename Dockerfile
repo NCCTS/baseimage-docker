@@ -9,6 +9,9 @@ MAINTAINER "Michael Bradley" <michael.bradley@nccts.org>
 # build timestamp
 ENV REFRESHED_AT [2015-01-30 Sun 23:37]
 
+# preferred term
+ENV TERM xterm-256color
+
 # set ENTRY env var defaults
 ENV ENTRY_ENV_DEFAULT= \
     ENTRY_ENV_FILTER_ALL_DEFAULT=:ALL: \
