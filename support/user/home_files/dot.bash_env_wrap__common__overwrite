@@ -3,22 +3,14 @@ if [[ "${ENTRY_BASH_ENV+set}" = set && "${BASH_ENV+set}" = set ]]; then
     unset BASH_ENV
 fi
 
-if [ -f "$HOME/.bash_env" ]; then
-    . $HOME/.bash_env
-fi
-
-# if [ -f "$HOME/.entry_env" ]; then
-#     . $HOME/.entry_env
-# fi
-
-# if [[ "${BASH_ENV:+set}" = set && -f "$BASH_ENV" ]]; then
-#     . $BASH_ENV
-# fi
-
 if [ "${ENTRY_BASH_ENV_PRESERVE:+set}" = set ]; then
     export BASH_ENV="$ENTRY_BASH_ENV_PRESERVE"
     if [ -f "$BASH_ENV" ]; then
         . $BASH_ENV
     fi
     unset ENTRY_BASH_ENV_PRESERVE
+else
+    if [ -f "$HOME/.bash_env" ]; then
+        . $HOME/.bash_env
+    fi
 fi
