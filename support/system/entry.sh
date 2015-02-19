@@ -615,50 +615,33 @@ else
 fi
 
 if [ "$ENTRY_TMUX" = true ]; then
-    if [ -n "$entry_cmd" ]; then
-        if [ "${ENTRY_SESSION:+set}" = set ]; then
-            tmux_cmd=(tmux new-session -A -s "$ENTRY_SESSION" "$entry_cmd")
-        else
-            tmux_cmd=(tmux new-session -A "$entry_cmd")
-        fi
-        sudo_cmd_1=(sudo -i -u
-                    "$ENTRY_LOGIN"
-                    "$entry_filter_final"
-                    "ENTRY_BASH_ENV="
-                    "$entry_bash_env_preserve"
-                    "BASH_ENV=$entry_env_home/.bash_env_wrap")
-        sudo_cmd_2=(bash -c
-                    "$(printf "%q " "${tmux_cmd[@]}")")
-        eval "${sudo_cmd_1[@]} $(printf "%q " "${sudo_cmd_2[@]}")"
-    else
-        sudo_cmd=(sudo -i -u
-                  "$ENTRY_LOGIN"
-                  "$entry_filter_final"
-                  "ENTRY_BASH_ENV="
-                  "$entry_bash_env_preserve"
-                  "BASH_ENV=$entry_env_home/.bash_env_wrap"
-                  tmux new-session -A "$entry_session_flag" "$entry_empty_cmd")
-        eval "${sudo_cmd[@]}"
+    sudo_opts=(sudo -i -u
+                "$ENTRY_LOGIN"
+                "$entry_filter_final"
+                "ENTRY_BASH_ENV="
+                "$entry_bash_env_preserve"
+                "BASH_ENV=$entry_env_home/.bash_env_wrap")
+    if [ -z "$entry_cmd" ]; then
+        entry_cmd="$entry_empty_cmd"
     fi
+    if [ "${ENTRY_SESSION:+set}" = set ]; then
+        tmux_cmd=(tmux new-session -A -s "$ENTRY_SESSION" "$entry_cmd")
+    else
+        tmux_cmd=(tmux new-session -A "$entry_cmd")
+    fi
+    sudo_cmd=(bash -c "$(printf "%q " "${tmux_cmd[@]}")")
+    eval "${sudo_opts[@]} $(printf "%q " "${sudo_cmd[@]}")"
 else
-    if [ -n "$entry_cmd" ]; then
-        sudo_cmd=(sudo -i -u
-                  "$ENTRY_LOGIN"
-                  "$entry_filter_final"
-                  "ENTRY_BASH_ENV="
-                  "$entry_bash_env_preserve"
-                  "BASH_ENV=$entry_env_home/.bash_env_wrap"
-                  bash -c
-                  "$(printf "%q " "$entry_cmd")")
-        eval "${sudo_cmd[@]}"
+    sudo_opts=(sudo -i -u
+              "$ENTRY_LOGIN"
+              "$entry_filter_final"
+              "ENTRY_BASH_ENV="
+              "$entry_bash_env_preserve"
+              "BASH_ENV=$entry_env_home/.bash_env_wrap")
+    if [ -z "$entry_cmd" ]; then
+        sudo_cmd=("$entry_empty_cmd")
     else
-        sudo_cmd=(sudo -i -u
-                  "$ENTRY_LOGIN"
-                  "$entry_filter_final"
-                  "ENTRY_BASH_ENV="
-                  "$entry_bash_env_preserve"
-                  "BASH_ENV=$entry_env_home/.bash_env_wrap"
-                  "$entry_empty_cmd")
-        eval "${sudo_cmd[@]}"
+        sudo_cmd=(bash -c "$entry_cmd")
     fi
+    eval "${sudo_opts[@]} $(printf "%q " "${sudo_cmd[@]}")"
 fi
