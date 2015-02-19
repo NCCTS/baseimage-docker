@@ -12,6 +12,7 @@ apt-get -y install \
         curl \
         dpkg-dev \
         ed \
+        expect \
         g++ \
         gcc \
         git-core \
@@ -23,6 +24,7 @@ apt-get -y install \
         man-db \
         pkg-config \
         software-properties-common \
+        tcl \
         wget \
         zlib1g-dev
 
