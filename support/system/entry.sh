@@ -33,6 +33,10 @@
 # expected... better yet, learn to use tcl expect framework to write tests
 # for `docker run` and `docker exec`
 
+# revise examples in README w.r.t. revised entrypoint and opportunities to pass
+# flags to entry.sh (as alt. to spec'ing --env vars w/ `docker run`,
+# e.g. --tmux/-t vs. ENTRY_TMUX=true vs
+
 entry_pid=$$
 entry_ppid=$(ps -p ${pid:-$$} -o ppid= | awk '{ print $1 }')
 if [ "$entry_ppid" = "1" ]; then
