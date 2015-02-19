@@ -7,8 +7,10 @@ apt-get -y remove --auto-remove \
         g++ \
         gcc \
         libc6-dev \
+        libncurses5-dev \
         libpcre3-dev \
         liblzma-dev \
+        make \
         pkg-config \
         software-properties-common \
         zlib1g-dev
