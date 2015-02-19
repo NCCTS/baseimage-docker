@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# touch $HOME/.entry_env
-
 rm -rf $HOME/.bash_logout
 
 file_append () {
