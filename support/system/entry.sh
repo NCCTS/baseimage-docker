@@ -19,6 +19,10 @@
 #     && entry_login_shell=true \
 #         || entry_login_shell=false
 
+# still need to think about ENTRY_ processing w.r.t. opts and having opts be
+# lower priority than env vars, e.g. `--env ENTRY_TMUX` vs --tmux in the context
+# of `docker run`
+
 # consider moving entry_vars array (but seralized as a string) into Dockerfile
 
 # think about --append-env to complement --unset-env and --reset-env; could be
