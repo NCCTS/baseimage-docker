@@ -223,7 +223,7 @@ entry_usage () {
     exit 0
 }
 
-[ $# -eq 0 ] && entry_usage_short
+# [ $# -eq 0 ] && entry_usage_short
 gop="$(getopt -n$0 \
              -a \
              --longoptions \
