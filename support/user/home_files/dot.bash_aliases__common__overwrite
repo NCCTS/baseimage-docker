@@ -18,3 +18,5 @@ alias l='ls -CF'
 alias para='parallel'
 
 alias e="emacs -Q --eval \"(load-theme 'misterioso)\""
+
+alias racket='rlwrap racket'
